@@ -35,7 +35,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#
 .snum{position:absolute;top:4.5vh;right:5vw;font-family:'DM Mono',monospace;font-size:clamp(11.5px,1.4vh,16.2px);color:var(--ink4);letter-spacing:0.06em}
 .cat{font-size:clamp(10.3px,1.5vh,15.0px);font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink4);margin-bottom:1vh;display:flex;align-items:center;gap:10px}
 .cat::before{content:'';display:inline-block;width:22px;height:2px;background:var(--signal);border-radius:1px;flex-shrink:0}
-.src{font-size:clamp(8.5px,1vh,11px);color:var(--ink4);font-style:italic;margin-top:4px;line-height:1.3}
+.src{font-size:clamp(8.5px,1vh,11px);color:var(--ink4);font-style:italic;margin-top:clamp(6px,1vh,12px);padding-top:0;line-height:1.3}
 .src a{color:var(--ink4);text-decoration:underline}
 .title-sub{font-size:clamp(14.9px,2.4vh,22.5px);color:var(--ink3);line-height:1.65;max-width:52ch}
 .title-meta{display:flex;gap:0;margin-top:auto;padding-top:clamp(14px,2vh,24px);border-top:1px solid var(--rule);flex-shrink:0}
@@ -45,11 +45,11 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#
 .stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--rule);border-radius:8px;overflow:hidden;margin-bottom:1.5vh;flex:1;min-height:0}
 .stat{padding:clamp(12px,2.2vh,28px) clamp(13.8px,2.5vw,30.0px);border-right:1px solid var(--rule);display:flex;flex-direction:column;justify-content:space-between}
 .stat:last-child{border-right:none}
-.stat .slabel{font-size:clamp(10.3px,1.5vh,15.0px);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink4);display:flex;align-items:center;gap:6px;margin-bottom:2px}
+.stat .slabel{font-size:clamp(10.3px,1.5vh,15.0px);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink4);display:flex;align-items:center;gap:6px;margin-bottom:clamp(10px,1.5vh,18px)}
 .stat .slabel img{width:15px;height:15px;object-fit:contain;border-radius:2px;flex-shrink:0}
-.stat .val{font-family:'DM Mono',monospace;font-size:clamp(38px,8vh,82px);font-weight:500;letter-spacing:-0.04em;line-height:1;margin:auto 0}
+.stat .val{font-family:'DM Mono',monospace;font-size:clamp(38px,8vh,82px);font-weight:500;letter-spacing:-0.04em;line-height:1;margin:0}
 .stat .val.p{color:var(--signal)}.stat .val.g{color:var(--ok)}
-.stat .desc{font-size:clamp(11px,1.4vh,14px);color:var(--ink3);line-height:1.4}
+.stat .desc{font-size:clamp(14px,2.1vh,20px);color:var(--ink3);line-height:1.45;margin-top:clamp(4px,0.6vh,8px);margin-bottom:clamp(2px,0.3vh,4px)}
 .callout{padding:clamp(11.5px,1.8vh,20.0px) clamp(13.8px,2.1vw,22.5px);font-size:clamp(12.6px,1.7vh,16px);line-height:1.6;border-radius:6px;flex-shrink:0}
 .callout.p{background:var(--signal-bg);border-left:3px solid var(--signal);color:var(--ink2)}
 .callout.r{background:#fef2f2;border-left:3px solid #ef4444;color:var(--ink2)}
@@ -77,12 +77,12 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#
 .pbox{background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:clamp(11.5px,1.8vh,22px) clamp(13.8px,1.8vw,22px);display:flex;flex-direction:column}
 .pbox.featured{border-color:var(--signal);border-width:2px}
 .popular-tag{display:inline-block;background:var(--signal);color:#fff;font-size:clamp(9px,1vh,11px);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:2px 8px;border-radius:3px;margin-bottom:5px;width:fit-content}
-.pbox-name{font-size:clamp(15px,2.2vh,22px);font-weight:700;color:var(--ink);margin-bottom:3px}
+.pbox-name{font-size:clamp(18px,2.8vh,26px);font-weight:700;color:var(--ink);margin-bottom:3px}
 .pbox-price{font-family:'DM Mono',monospace;font-size:clamp(26px,4.5vh,48px);font-weight:500;color:var(--signal);letter-spacing:-0.04em;line-height:1;margin-bottom:3px}
 .pbox-price span{font-size:clamp(11px,1.4vh,14px);color:var(--ink4);font-weight:400;letter-spacing:0}
-.pbox-desc{font-size:clamp(10.5px,1.3vh,13px);color:var(--ink3);margin-bottom:clamp(8px,1.2vh,14px);padding-bottom:clamp(8px,1.2vh,14px);border-bottom:1px solid var(--rule)}
+.pbox-desc{font-size:clamp(12px,1.6vh,15px);color:var(--ink3);margin-bottom:clamp(8px,1.2vh,14px);padding-bottom:clamp(8px,1.2vh,14px);border-bottom:1px solid var(--rule)}
 .pbox-feat{display:flex;flex-direction:column;gap:0;flex:1;justify-content:space-evenly}
-.pbox-feat-row{font-size:clamp(11px,1.4vh,14px);color:var(--ink2);line-height:1.35;padding:clamp(3px,0.5vh,6px) 0;border-bottom:1px solid var(--paper3);display:flex;align-items:center;gap:6px}
+.pbox-feat-row{font-size:clamp(13px,1.7vh,16px);color:var(--ink2);line-height:1.35;padding:clamp(3px,0.5vh,6px) 0;border-bottom:1px solid var(--paper3);display:flex;align-items:center;gap:6px}
 .pbox-feat-row:last-child{border-bottom:none}
 .pbox-feat-row .ico-sm{width:13px;height:13px;object-fit:contain;border-radius:2px;flex-shrink:0;opacity:0.7}
 .steps{flex:1;display:flex;flex-direction:column;justify-content:space-evenly}
@@ -105,6 +105,47 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#
 .dt tr:last-child td{border-bottom:none}
 .chip{display:inline-block;border-radius:3px;padding:2px 7px;font-size:clamp(10.3px,1.4vh,13.8px);font-weight:700}
 .chip.g{background:var(--ok-bg);color:var(--ok)}.chip.n{background:var(--paper3);color:var(--ink3)}
+/* Responsive: Tablet (portrait) */
+@media(max-width:1024px){
+  .s{padding:3vh 4vw 3vh}
+  .reveal h1{font-size:clamp(24px,5vh,48px)!important}
+  .reveal h2{font-size:clamp(20px,3.5vh,36px)!important}
+  .stats{grid-template-columns:repeat(3,1fr)!important}
+  .two{grid-template-columns:1fr!important;gap:2vh}
+  .pboxes{grid-template-columns:1fr 1fr 1fr!important}
+  .outcomes{grid-template-columns:1fr 1fr!important}
+}
+/* Responsive: Tablet inline grids */
+@media(max-width:1024px){
+  [style*="grid-template-columns:1fr 1fr 1fr"]{grid-template-columns:1fr 1fr!important}
+  [style*="grid-template-columns:repeat(5"]{grid-template-columns:repeat(3,1fr)!important}
+}
+/* Responsive: Mobile */
+@media(max-width:680px){
+  .s{padding:2.5vh 4vw 2.5vh}
+  .reveal h1{font-size:clamp(18px,4vh,32px)!important}
+  .reveal h2{font-size:clamp(16px,3vh,28px)!important}
+  .title-sub{font-size:clamp(11px,1.8vh,16px)!important}
+  .title-meta{flex-wrap:wrap;gap:clamp(8px,1.5vh,14px)}
+  .title-meta-item{flex:none;width:48%}
+  .stats{grid-template-columns:1fr 1fr!important}
+  .stat{padding:clamp(8px,1.5vh,14px) clamp(8px,2vw,14px)}
+  .stat .val{font-size:clamp(24px,5vh,48px)}
+  .stat .desc{font-size:clamp(10px,1.4vh,13px)!important}
+  .two{grid-template-columns:1fr!important;gap:2vh}
+  .pboxes{grid-template-columns:1fr!important}
+  .pbox{padding:clamp(10px,1.5vh,16px) clamp(10px,2vw,16px)}
+  .outcomes{grid-template-columns:1fr!important}
+  .frows{gap:0}
+  .steps{gap:0}
+  [style*="grid-template-columns:1fr 1fr 1fr"]{grid-template-columns:1fr!important}
+  [style*="grid-template-columns:repeat(5"]{grid-template-columns:repeat(2,1fr)!important}
+  [style*="grid-template-columns:1fr 1fr;gap"]{grid-template-columns:1fr!important}
+  .s{overflow-y:auto!important;height:auto!important;min-height:100vh}
+  .reveal .slides section{overflow-y:auto!important}
+  .callout{font-size:clamp(10px,1.3vh,13px)}
+  .col-head{font-size:clamp(9px,1.2vh,12px)}
+}
 /* Dashboard screenshot placeholder */
 .dash-placeholder{flex:1;border:1px solid var(--rule);border-radius:8px;overflow:hidden;min-height:0;position:relative}
 .dash-placeholder img{width:100%;height:100%;object-fit:cover;object-position:top left;display:block}
@@ -122,7 +163,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#
     <div style="display:inline-flex;align-items:center;gap:8px">
       <img src="https://www.aipeekaboo.com/images/peekaboo-logo-black.png" style="height:clamp(18px,2.4vh,28px);width:auto;display:block" alt="AI Peekaboo">
     </div>
-    <h1 style="margin-bottom:0">AI Peekaboo<br><span style="color:var(--signal)">Be Found Where<br>AI Searches</span></h1>
+    <h1 style="margin-bottom:0;font-size:clamp(28px,5.5vh,64px)">AI Peekaboo<br><span style="color:var(--signal)">We help you understand what LLMs think about your<br>brand and what you should do to be mentioned more often.</span></h1>
     <div style="width:clamp(36px,5vw,60px);height:2px;background:var(--signal);border-radius:1px"></div>
     <p class="title-sub">The AI search visibility platform that tracks your brand across ChatGPT, Gemini, Perplexity, Google AI Overviews, and Google AI Mode.</p>
     <!-- Trusted by -->
@@ -143,7 +184,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#
     <div class="title-meta-item"><b>Product</b><span>AI Peekaboo</span></div>
     <div class="title-meta-item"><b>Category</b><span>AI Search Visibility</span></div>
     <div class="title-meta-item"><b>Website</b><span>aipeekaboo.com</span></div>
-    <div class="title-meta-item"><b>Free Trial</b><span>14 days, no card</span></div>
+    <div class="title-meta-item"><b>LLMs Tracked</b><span style="display:flex;align-items:center;gap:6px"><img src="https://www.aipeekaboo.com/logos/openai.png" style="width:18px;height:18px;border-radius:3px" alt="ChatGPT" title="ChatGPT"><img src="https://www.aipeekaboo.com/logos/google-logo.png" style="width:18px;height:18px;border-radius:3px" alt="Google AI Overviews" title="Google AI Overviews"><img src="https://www.aipeekaboo.com/logos/gem-logo.png" style="width:18px;height:18px;border-radius:3px" alt="Gemini" title="Gemini"><img src="https://www.aipeekaboo.com/logos/perplexity.png" style="width:18px;height:18px;border-radius:3px" alt="Perplexity" title="Perplexity"><img src="https://www.aipeekaboo.com/logos/google-logo.png" style="width:18px;height:18px;border-radius:3px" alt="Google AI Mode" title="Google AI Mode"></span></div>
   </div>
 </div></section>
 
@@ -173,6 +214,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#
       <div class="src"><a href="https://mcfadyen.com/articles/brand-visibility-in-the-age-of-ai/" target="_blank">McFadyen Digital, 2025</a></div>
     </div>
   </div>
+  <div style="font-size:clamp(11px,1.4vh,14px);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);text-align:center;padding:clamp(4px,0.6vh,8px) 0;border-top:1px solid var(--rule)">The number of active users don't lie</div>
   <div class="stats" style="grid-template-columns:repeat(3,1fr);margin-bottom:1vh">
     <div class="stat">
       <div class="slabel"><img src="https://www.aipeekaboo.com/logos/openai.png" alt="">ChatGPT</div>

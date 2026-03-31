@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Peekaboo - Company Overview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#18181b;--ink2:#3f3f46;--ink3:#71717a;--ink4:#a1a1aa;
+  --paper:#ffffff;--paper2:#fafaf9;--paper3:#f4f4f5;--rule:#e4e4e7;
+  --signal:#b352b3;--signal-bg:#faf0fa;--signal-bd:#e4a8e4;
+  --warn:#ea580c;--warn-bg:#fff7ed;--warn-bd:#fed7aa;
+  --ok:#16a34a;--ok-bg:#f0fdf4;--ok-bd:#bbf7d0;
+}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#fff}
+.reveal-viewport,.reveal{width:100%!important;height:100%!important;background:#fff!important}
+.reveal .backgrounds,.reveal .slide-background,.reveal .slide-background-content{background:#fff!important}
+.reveal .slides{width:100%!important;height:100%!important;position:absolute!important;top:0!important;left:0!important;transform:none!important}
+.reveal .slides section{position:absolute!important;top:0!important;left:0!important;width:100%!important;height:100%!important;padding:0!important;background:#fff!important;display:flex!important;flex-direction:column!important;text-align:left!important}
+.reveal .slides section *{text-align:left}
+.reveal .progress{color:var(--signal);height:2px}
+.reveal .controls button{color:var(--ink3)}
+.reveal .slide-number{font-family:'DM Mono',monospace;font-size:11px;color:var(--ink4);background:none;letter-spacing:0.06em}
+.reveal .slides,.reveal .slides *{font-family:'DM Sans',sans-serif;color:var(--ink)}
+.reveal h1,.reveal h2,.reveal h3,.reveal h4{text-transform:none;line-height:1.1;margin:0;font-weight:700;text-align:left}
+.reveal h2{font-size:clamp(25.3px,4.8vh,47.5px)!important;letter-spacing:-0.03em;margin-bottom:1.8vh}
+.reveal h1{font-size:clamp(52px,13.5vh,160px);letter-spacing:-0.04em}
+.s{width:100vw;height:100vh;padding:5vh 5.5vw 5vh;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.stripe{position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--signal)}
+.snum{position:absolute;top:4.5vh;right:5vw;font-family:'DM Mono',monospace;font-size:clamp(11.5px,1.4vh,16.2px);color:var(--ink4);letter-spacing:0.06em}
+.cat{font-size:clamp(10.3px,1.5vh,15.0px);font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink4);margin-bottom:1vh;display:flex;align-items:center;gap:10px}
+.cat::before{content:'';display:inline-block;width:22px;height:2px;background:var(--signal);border-radius:1px;flex-shrink:0}
+.src{font-size:clamp(8.5px,1vh,11px);color:var(--ink4);font-style:italic;margin-top:4px;line-height:1.3}
+.src a{color:var(--ink4);text-decoration:underline}
+.title-sub{font-size:clamp(14.9px,2.4vh,22.5px);color:var(--ink3);line-height:1.65;max-width:52ch}
+.title-meta{display:flex;gap:0;margin-top:auto;padding-top:clamp(14px,2vh,24px);border-top:1px solid var(--rule);flex-shrink:0}
+.title-meta-item{flex:1;padding-right:2vw}
+.title-meta-item b{font-size:clamp(10.3px,1.4vh,13.8px);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink4);display:block;margin-bottom:4px}
+.title-meta-item span{font-size:clamp(13.8px,2.1vh,18.8px);color:var(--ink2)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--rule);border-radius:8px;overflow:hidden;margin-bottom:1.5vh;flex:1;min-height:0}
+.stat{padding:clamp(12px,2.2vh,28px) clamp(13.8px,2.5vw,30.0px);border-right:1px solid var(--rule);display:flex;flex-direction:column;justify-content:space-between}
+.stat:last-child{border-right:none}
+.stat .slabel{font-size:clamp(10.3px,1.5vh,15.0px);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink4);display:flex;align-items:center;gap:6px;margin-bottom:2px}
+.stat .slabel img{width:15px;height:15px;object-fit:contain;border-radius:2px;flex-shrink:0}
+.stat .val{font-family:'DM Mono',monospace;font-size:clamp(38px,8vh,82px);font-weight:500;letter-spacing:-0.04em;line-height:1;margin:auto 0}
+.stat .val.p{color:var(--signal)}.stat .val.g{color:var(--ok)}
+.stat .desc{font-size:clamp(11px,1.4vh,14px);color:var(--ink3);line-height:1.4}
+.callout{padding:clamp(11.5px,1.8vh,20.0px) clamp(13.8px,2.1vw,22.5px);font-size:clamp(12.6px,1.7vh,16px);line-height:1.6;border-radius:6px;flex-shrink:0}
+.callout.p{background:var(--signal-bg);border-left:3px solid var(--signal);color:var(--ink2)}
+.callout.r{background:#fef2f2;border-left:3px solid #ef4444;color:var(--ink2)}
+.callout.n{background:var(--paper2);border-left:3px solid var(--rule);color:var(--ink3)}
+.callout strong{color:var(--ink);font-weight:600}
+.findings{flex:1;display:flex;flex-direction:column;min-height:0;justify-content:space-evenly}
+.finding{display:grid;grid-template-columns:auto 1fr;gap:1.4vw;padding:clamp(9.2px,1.8vh,20.0px) 0;border-bottom:1px solid var(--rule);align-items:center;flex:1}
+.finding:first-child{border-top:1px solid var(--rule)}
+.ftag{font-size:clamp(10.3px,1.4vh,13.8px);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:3px;white-space:nowrap;margin-top:2px}
+.ftag.p{background:var(--signal-bg);color:var(--signal)}.ftag.g{background:var(--ok-bg);color:var(--ok)}.ftag.o{background:var(--warn-bg);color:var(--warn)}.ftag.n{background:var(--paper3);color:var(--ink3)}
+.finding h4{font-size:clamp(13.8px,2.1vh,20.0px);font-weight:600;color:var(--ink);margin-bottom:3px}
+.finding p{font-size:clamp(12.6px,1.8vh,17.5px);color:var(--ink3);line-height:1.5}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:3vw;flex:1;min-height:0;align-items:stretch}
+.two>div{display:flex;flex-direction:column}
+.col-head{font-size:clamp(10.3px,1.4vh,13.8px);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink4);padding-bottom:8px;border-bottom:1px solid var(--rule);margin-bottom:12px;flex-shrink:0}
+.two .findings{flex:1}
+.frows{display:flex;flex-direction:column;flex:1;justify-content:space-evenly}
+.frow{display:grid;grid-template-columns:28px 1fr auto;gap:12px;padding:clamp(9.2px,1.5vh,17.5px) 0;border-bottom:1px solid var(--rule);align-items:center;flex:1}
+.frow:last-child{border-bottom:none}
+.frow-n{font-family:'DM Mono',monospace;font-size:clamp(11.5px,1.7vh,16.2px);font-weight:500;color:var(--ink4);align-self:center}
+.frow h4{font-size:clamp(13.8px,2.1vh,20.0px);font-weight:600;color:var(--ink);margin-bottom:3px}
+.frow p{font-size:clamp(12.6px,1.8vh,17.5px);color:var(--ink3);line-height:1.5}
+.badge{font-family:'DM Mono',monospace;font-size:clamp(10.3px,1.5vh,15.0px);font-weight:600;color:var(--signal);background:var(--signal-bg);border:1px solid var(--signal-bd);border-radius:3px;padding:3px 8px;white-space:nowrap;align-self:center}
+.pboxes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:clamp(9.2px,1.5vw,20px);flex:1;min-height:0}
+.pbox{background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:clamp(11.5px,1.8vh,22px) clamp(13.8px,1.8vw,22px);display:flex;flex-direction:column}
+.pbox.featured{border-color:var(--signal);border-width:2px}
+.popular-tag{display:inline-block;background:var(--signal);color:#fff;font-size:clamp(9px,1vh,11px);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:2px 8px;border-radius:3px;margin-bottom:5px;width:fit-content}
+.pbox-name{font-size:clamp(15px,2.2vh,22px);font-weight:700;color:var(--ink);margin-bottom:3px}
+.pbox-price{font-family:'DM Mono',monospace;font-size:clamp(26px,4.5vh,48px);font-weight:500;color:var(--signal);letter-spacing:-0.04em;line-height:1;margin-bottom:3px}
+.pbox-price span{font-size:clamp(11px,1.4vh,14px);color:var(--ink4);font-weight:400;letter-spacing:0}
+.pbox-desc{font-size:clamp(10.5px,1.3vh,13px);color:var(--ink3);margin-bottom:clamp(8px,1.2vh,14px);padding-bottom:clamp(8px,1.2vh,14px);border-bottom:1px solid var(--rule)}
+.pbox-feat{display:flex;flex-direction:column;gap:0;flex:1;justify-content:space-evenly}
+.pbox-feat-row{font-size:clamp(11px,1.4vh,14px);color:var(--ink2);line-height:1.35;padding:clamp(3px,0.5vh,6px) 0;border-bottom:1px solid var(--paper3);display:flex;align-items:center;gap:6px}
+.pbox-feat-row:last-child{border-bottom:none}
+.pbox-feat-row .ico-sm{width:13px;height:13px;object-fit:contain;border-radius:2px;flex-shrink:0;opacity:0.7}
+.steps{flex:1;display:flex;flex-direction:column;justify-content:space-evenly}
+.step{display:grid;grid-template-columns:48px 1fr;gap:1.5vw;padding:clamp(14px,2.5vh,28px) 0;border-bottom:1px solid var(--rule);align-items:center;flex:1}
+.step:first-child{border-top:1px solid var(--rule)}
+.step-n{font-family:'DM Mono',monospace;font-size:clamp(23.0px,4.2vh,45.0px);font-weight:400;color:var(--rule);letter-spacing:-0.04em;line-height:1}
+.step h4{font-size:clamp(13.8px,2.1vh,20.0px);font-weight:600;color:var(--ink);margin-bottom:4px}
+.step p{font-size:clamp(12.6px,1.8vh,17.5px);color:var(--ink3);line-height:1.5}
+.outcomes{display:grid;grid-template-columns:1fr 1fr;gap:clamp(9.2px,1.7vh,17.5px);margin-top:clamp(11.5px,2.1vh,22.5px);flex-shrink:0}
+.obox{background:var(--paper2);border:1px solid var(--rule);border-radius:6px;padding:clamp(11.5px,2.0vh,20.0px) clamp(13.8px,2.0vw,22.5px)}
+.obox .ot{font-size:clamp(10.3px,1.4vh,13.8px);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink4);margin-bottom:6px}
+.obox p{font-size:clamp(12.6px,1.8vh,17.5px);color:var(--ink2);line-height:1.5}
+.dfav{display:flex;align-items:center;gap:8px}
+.platform-logo{width:clamp(14px,1.8vh,20px);height:clamp(14px,1.8vh,20px);border-radius:3px;object-fit:contain}
+.dt{width:100%;border-collapse:collapse}
+.dt th{font-size:clamp(10.3px,1.4vh,13.8px);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink4);text-align:left;padding:clamp(6.9px,1.3vh,12.5px) 0 clamp(6.9px,1.3vh,12.5px) 10px;border-bottom:2px solid var(--rule)}
+.dt th:first-child{padding-left:0}
+.dt td{font-size:clamp(12.6px,1.8vh,17.5px);padding:clamp(9px,1.8vh,18px) 0 clamp(9px,1.8vh,18px) 10px;color:var(--ink2);border-bottom:1px solid var(--paper3);vertical-align:middle}
+.dt td:first-child{padding-left:0}
+.dt tr:last-child td{border-bottom:none}
+.chip{display:inline-block;border-radius:3px;padding:2px 7px;font-size:clamp(10.3px,1.4vh,13.8px);font-weight:700}
+.chip.g{background:var(--ok-bg);color:var(--ok)}.chip.n{background:var(--paper3);color:var(--ink3)}
+/* Dashboard screenshot placeholder */
+.dash-placeholder{flex:1;border:1px solid var(--rule);border-radius:8px;overflow:hidden;min-height:0;position:relative}
+.dash-placeholder img{width:100%;height:100%;object-fit:cover;object-position:top left;display:block}
+.dash-placeholder .ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--paper2);color:var(--ink4);font-size:13px;font-family:'DM Mono',monospace}
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- 01 TITLE -->
+<section><div class="s">
+  <div class="stripe"></div>
+  <div class="snum">01 / 07</div>
+  <div style="margin-top:clamp(8vh,12vh,16vh);display:flex;flex-direction:column;gap:clamp(14px,2.2vh,28px);padding-bottom:clamp(16px,2.5vh,32px)">
+    <div style="display:inline-flex;align-items:center;gap:8px">
+      <img src="https://www.aipeekaboo.com/images/peekaboo-logo-black.png" style="height:clamp(18px,2.4vh,28px);width:auto;display:block" alt="AI Peekaboo">
+    </div>
+    <h1 style="margin-bottom:0">AI Peekaboo<br><span style="color:var(--signal)">Be Found Where<br>AI Searches</span></h1>
+    <div style="width:clamp(36px,5vw,60px);height:2px;background:var(--signal);border-radius:1px"></div>
+    <p class="title-sub">The AI search visibility platform that tracks your brand across ChatGPT, Gemini, Perplexity, Google AI Overviews, and Google AI Mode.</p>
+    <!-- Trusted by -->
+    <div style="display:flex;align-items:center;gap:clamp(10px,1.5vw,20px);flex-wrap:wrap;padding-top:clamp(10px,1.5vh,18px);border-top:1px solid var(--rule)">
+      <span style="font-size:clamp(11px,1.4vh,14px);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink4)">Trusted by 100+ agencies and brands</span>
+      <div style="display:flex;align-items:center;gap:clamp(8px,1vw,14px);flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:5px"><img src="https://www.google.com/s2/favicons?domain=forbespt.com&sz=32" style="width:18px;height:18px;border-radius:3px" alt=""><span style="font-size:clamp(10px,1.2vh,12px);color:var(--ink3);font-weight:500">Forbes Portugal</span></div>
+        <div style="display:flex;align-items:center;gap:5px"><img src="https://www.google.com/s2/favicons?domain=reviews.io&sz=32" style="width:18px;height:18px;border-radius:3px" alt=""><span style="font-size:clamp(10px,1.2vh,12px);color:var(--ink3);font-weight:500">Reviews.io</span></div>
+        <div style="display:flex;align-items:center;gap:5px"><img src="https://www.google.com/s2/favicons?domain=clearer.io&sz=32" style="width:18px;height:18px;border-radius:3px" alt=""><span style="font-size:clamp(10px,1.2vh,12px);color:var(--ink3);font-weight:500">Clearer.io</span></div>
+        <div style="display:flex;align-items:center;gap:5px"><img src="https://www.google.com/s2/favicons?domain=shaadi.com&sz=32" style="width:18px;height:18px;border-radius:3px" alt=""><span style="font-size:clamp(10px,1.2vh,12px);color:var(--ink3);font-weight:500">Shaadi.com</span></div>
+        <div style="display:flex;align-items:center;gap:5px"><img src="https://www.google.com/s2/favicons?domain=boostcommerce.net&sz=32" style="width:18px;height:18px;border-radius:3px" alt=""><span style="font-size:clamp(10px,1.2vh,12px);color:var(--ink3);font-weight:500">Boost Commerce</span></div>
+        <div style="display:flex;align-items:center;gap:5px"><img src="https://www.google.com/s2/favicons?domain=intellibright.com&sz=32" style="width:18px;height:18px;border-radius:3px" alt=""><span style="font-size:clamp(10px,1.2vh,12px);color:var(--ink3);font-weight:500">Intellibright</span></div>
+        <div style="display:flex;align-items:center;gap:5px"><img src="https://www.google.com/s2/favicons?domain=akumin.com&sz=32" style="width:18px;height:18px;border-radius:3px" alt=""><span style="font-size:clamp(10px,1.2vh,12px);color:var(--ink3);font-weight:500">Akumin</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="title-meta">
+    <div class="title-meta-item"><b>Product</b><span>AI Peekaboo</span></div>
+    <div class="title-meta-item"><b>Category</b><span>AI Search Visibility</span></div>
+    <div class="title-meta-item"><b>Website</b><span>aipeekaboo.com</span></div>
+    <div class="title-meta-item"><b>Free Trial</b><span>14 days, no card</span></div>
+  </div>
+</div></section>
+
+<!-- 02 THE PROBLEM -->
+<section><div class="s">
+  <div class="stripe"></div>
+  <div class="snum">02 / 07</div>
+  <div class="cat">The Problem</div>
+  <h2>The buying journey is changing. <span style="color:var(--signal)">Search is starting with AI.</span></h2>
+  <div class="stats" style="grid-template-columns:repeat(3,1fr);margin-bottom:1vh">
+    <div class="stat">
+      <div class="slabel" style="font-weight:700;color:var(--ink)"><img src="https://www.google.com/s2/favicons?domain=searchengineland.com&sz=32" alt="">Start with AI</div>
+      <div class="val p">37%</div>
+      <div class="desc">Of consumers now start searches with AI instead of Google</div>
+      <div class="src"><a href="https://searchengineland.com/consumers-start-searches-ai-not-google-study-467159" target="_blank">Search Engine Land, Jan 2026</a></div>
+    </div>
+    <div class="stat">
+      <div class="slabel" style="font-weight:700;color:var(--ink)"><img src="https://www.google.com/s2/favicons?domain=searchengineland.com&sz=32" alt="">Prefer AI answers</div>
+      <div class="val p">60%</div>
+      <div class="desc">Of users say AI delivers better, clearer answers than traditional search</div>
+      <div class="src"><a href="https://searchengineland.com/consumers-start-searches-ai-not-google-study-467159" target="_blank">Search Engine Land, Jan 2026</a></div>
+    </div>
+    <div class="stat">
+      <div class="slabel" style="font-weight:700;color:var(--ink)"><img src="https://www.google.com/s2/favicons?domain=mcfadyen.com&sz=32" alt="">AI Referral Growth</div>
+      <div class="val p">527%</div>
+      <div class="desc">Jump in AI-referred web sessions between January and May 2025</div>
+      <div class="src"><a href="https://mcfadyen.com/articles/brand-visibility-in-the-age-of-ai/" target="_blank">McFadyen Digital, 2025</a></div>
+    </div>
+  </div>
+  <div class="stats" style="grid-template-columns:repeat(3,1fr);margin-bottom:1vh">
+    <div class="stat">
+      <div class="slabel"><img src="https://www.aipeekaboo.com/logos/openai.png" alt="">ChatGPT</div>
+      <div class="val p">900M</div>
+      <div class="desc">Weekly active users as of early 2026</div>
+      <div class="src"><a href="https://www.demandsage.com/chatgpt-statistics/" target="_blank">DemandSage, 2026</a></div>
+    </div>
+    <div class="stat">
+      <div class="slabel"><img src="https://www.aipeekaboo.com/logos/gem-logo.png" alt="">Gemini</div>
+      <div class="val p">710M</div>
+      <div class="desc">Monthly active users across Workspace, Android, and Search</div>
+      <div class="src"><a href="https://www.demandsage.com/gemini-statistics/" target="_blank">DemandSage, 2026</a></div>
+    </div>
+    <div class="stat">
+      <div class="slabel"><img src="https://www.aipeekaboo.com/logos/perplexity.png" alt="">Perplexity</div>
+      <div class="val p">32M</div>
+      <div class="desc">Monthly active users on the fastest-growing AI research platform</div>
+      <div class="src"><a href="https://www.demandsage.com/perplexity-ai-statistics/" target="_blank">DemandSage, 2026</a></div>
+    </div>
+  </div>
+  <div class="callout r"><strong>The blind spot:</strong> While brands invest heavily in Google SEO, AI platforms are answering millions of queries daily. Most have no way to know whether they appear in those answers.</div>
+</div></section>
+
+
+<!-- 04 SOLUTION + PLATFORMS (merged) -->
+<section><div class="s">
+  <div class="stripe"></div>
+  <div class="snum">03 / 07</div>
+  <div class="cat">The Solution</div>
+  <h2>How It <span style="color:var(--signal)">Works</span></h2>
+  <div class="two">
+    <div style="display:flex;flex-direction:column;gap:1.5vh">
+      <div class="col-head">Core Features</div>
+      <div class="frows" style="flex:1">
+        <div class="frow"><div class="frow-n">01</div><div><h4>Prompt Tracking</h4><p>Track the prompts your customers are searching for across the five main AI platforms. Captured from real AI interfaces, not API simulations.</p></div><div style="display:flex;flex-direction:column;align-items:center;gap:4px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#b352b3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><div class="badge">Real UI</div></div></div>
+        <div class="frow"><div class="frow-n">02</div><div><h4>Source Tracking</h4><p>See which third-party sources (Reddit, YouTube, review sites) AI models cite when recommending brands in your category. Know exactly where to build authority.</p></div><div style="display:flex;flex-direction:column;align-items:center;gap:4px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#b352b3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><div class="badge">Sources</div></div></div>
+        <div class="frow"><div class="frow-n">03</div><div><h4>Recommendations</h4><p>Track how often your brand is recommended, in what position, and how that changes over time. Your AI Visibility Score (0-100) per keyword and per platform.</p></div><div style="display:flex;flex-direction:column;align-items:center;gap:4px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#b352b3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><div class="badge">0-100</div></div></div>
+        <div class="frow"><div class="frow-n">04</div><div><h4>Competitor Benchmarking</h4><p>See who AI recommends instead of you, for which queries, and why. Gap analysis shows exactly what to fix to close the distance.</p></div><div style="display:flex;flex-direction:column;align-items:center;gap:4px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#b352b3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><div class="badge">Real-time</div></div></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1vh">
+      <div class="dash-placeholder" style="flex:1;min-height:0">
+        <img src="dashboard.jpg" alt="AI Peekaboo Dashboard" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block">
+        
+      </div>
+      <div class="col-head" style="margin-bottom:4px;margin-top:4px">Platform Status</div>
+      <table class="dt" style="flex-shrink:0">
+        <tbody>
+          <tr><td><span class="dfav"><img src="https://www.aipeekaboo.com/logos/openai.png" class="platform-logo" alt="">ChatGPT</span></td><td style="text-align:right"><span class="chip g">Live</span></td></tr>
+          <tr><td><span class="dfav"><img src="https://www.aipeekaboo.com/logos/google-logo.png" class="platform-logo" alt="">Google AI Overviews</span></td><td style="text-align:right"><span class="chip g">Live</span></td></tr>
+          <tr><td><span class="dfav"><img src="https://www.aipeekaboo.com/logos/gem-logo.png" class="platform-logo" alt="">Gemini</span></td><td style="text-align:right"><span class="chip g">Live</span></td></tr>
+          <tr><td><span class="dfav"><img src="https://www.aipeekaboo.com/logos/perplexity.png" class="platform-logo" alt="">Perplexity</span></td><td style="text-align:right"><span class="chip g">Live</span></td></tr>
+          <tr><td><span class="dfav"><img src="https://www.aipeekaboo.com/logos/google-logo.png" class="platform-logo" alt="">Google AI Mode</span></td><td style="text-align:right"><span class="chip g">Live</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div></section>
+
+<!-- 05 INTEGRATIONS -->
+<section><div class="s">
+  <div class="stripe"></div>
+  <div class="snum">04 / 07</div>
+  <div class="cat">Integrations &amp; Scale</div>
+  <h2>Built for <span style="color:var(--signal)">Agencies &amp; Growing Brands</span></h2>
+  <div class="two">
+    <div>
+      <div class="col-head">Integrations (all paid plans)</div>
+      <div class="findings">
+        <div class="finding"><span class="ftag p" style="display:flex;align-items:center;gap:4px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#b352b3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;flex-shrink:0"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Looker Studio</span><div style="flex:1"><h4>Native Looker Studio connector</h4><p>Drag AI Peekaboo data into your existing Looker Studio reports alongside GA4 and Search Console. No custom coding needed.</p></div></div>
+        <div class="finding"><span class="ftag p" style="display:flex;align-items:center;gap:4px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#b352b3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>API</span><div style="flex:1"><h4>Full API access on all paid plans</h4><p>Pull AI visibility data into your own dashboards, reporting tools, or client workflows. Full documentation provided.</p></div></div>
+        <div class="finding" style="border-bottom:none"><span class="ftag p" style="display:flex;align-items:center;gap:4px"><img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-search-console-icon.png" style="width:13px;height:13px;border-radius:2px" alt="">Search Console</span><div style="flex:1"><h4>Google Search Console integration</h4><p>Connect GSC to correlate AI visibility changes with organic traffic movements. See the full picture in one place.</p></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="col-head">White Label</div>
+      <div class="findings">
+        <div class="finding"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#b352b3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:clamp(22px,3vh,32px);height:clamp(22px,3vh,32px);flex-shrink:0"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><div><h4>White-labelled client dashboards</h4><p>Present AI visibility reports to your clients under your own brand. Available on agency plans.</p></div></div>
+        <div class="finding"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#b352b3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:clamp(22px,3vh,32px);height:clamp(22px,3vh,32px);flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><div><h4>Branded report exports</h4><p>Export white-labelled reports for client delivery. Ideal for agency monthly reporting workflows.</p></div></div>
+        <div class="finding" style="border-bottom:none"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#b352b3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:clamp(22px,3vh,32px);height:clamp(22px,3vh,32px);flex-shrink:0"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg><div><h4>Multi-brand management</h4><p>For agencies managing 10+ brands, custom pricing with volume discounts is available. Contact sales at aipeekaboo.com/pricing.</p></div></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 06 HOW WE CAN HELP -->
+<section><div class="s">
+  <div class="stripe"></div>
+  <div class="snum">05 / 07</div>
+  <div class="cat">Results &amp; Services</div>
+  <h2>How We Can <span style="color:var(--signal)">Help You</span></h2>
+
+  <!-- Three value cards -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:clamp(8px,1.2vw,16px);margin-bottom:1.2vh;flex-shrink:0">
+    <!-- Trusted by -->
+    <div style="background:var(--paper2);border:1px solid var(--rule);border-radius:8px;padding:clamp(10px,1.5vh,18px) clamp(12px,1.5vw,18px)">
+      <div style="font-size:clamp(10px,1.3vh,13px);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink4);margin-bottom:6px">Trusted by</div>
+      <div style="font-size:clamp(15px,2.2vh,22px);font-weight:700;color:var(--ink);margin-bottom:8px">Hundreds of brands worldwide</div>
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+        <img src="https://www.google.com/s2/favicons?domain=forbespt.com&sz=32" style="width:18px;height:18px;border-radius:3px" title="Forbes Portugal" alt="Forbes PT">
+        <img src="https://www.google.com/s2/favicons?domain=clearer.io&sz=32" style="width:18px;height:18px;border-radius:3px" title="Clearer.io" alt="Clearer.io">
+        <img src="https://www.google.com/s2/favicons?domain=iservices.pt&sz=32" style="width:18px;height:18px;border-radius:3px" title="iServices.pt" alt="iServices">
+        <img src="https://www.google.com/s2/favicons?domain=reviews.io&sz=32" style="width:18px;height:18px;border-radius:3px" title="Reviews.io" alt="Reviews.io">
+        <img src="https://www.google.com/s2/favicons?domain=boostcommerce.net&sz=32" style="width:18px;height:18px;border-radius:3px" title="Boost Commerce" alt="Boost Commerce">
+        <img src="https://www.google.com/s2/favicons?domain=intellibright.com&sz=32" style="width:18px;height:18px;border-radius:3px" title="Intellibright" alt="Intellibright">
+        <span style="font-size:clamp(10px,1.2vh,12px);color:var(--ink4)">+ hundreds more</span>
+      </div>
+    </div>
+    <!-- Dedicated support -->
+    <div style="background:var(--paper2);border:1px solid var(--rule);border-radius:8px;padding:clamp(10px,1.5vh,18px) clamp(12px,1.5vw,18px)">
+      <div style="font-size:clamp(10px,1.3vh,13px);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink4);margin-bottom:6px">Dedicated Support</div>
+      <div style="font-size:clamp(15px,2.2vh,22px);font-weight:700;color:var(--ink);margin-bottom:6px">Your team, not a ticket queue</div>
+      <div style="font-size:clamp(11px,1.4vh,14px);color:var(--ink3);line-height:1.5">Direct access to a dedicated account manager. Onboarding, strategy reviews, and ongoing support, not just a help center.</div>
+    </div>
+    <!-- GEO/AEO managed service -->
+    <div style="background:var(--signal-bg);border:1px solid var(--signal-bd);border-radius:8px;padding:clamp(10px,1.5vh,18px) clamp(12px,1.5vw,18px)">
+      <div style="font-size:clamp(10px,1.3vh,13px);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--signal);margin-bottom:6px">Managed Service</div>
+      <div style="font-size:clamp(15px,2.2vh,22px);font-weight:700;color:var(--ink);margin-bottom:6px">Done-for-you GEO &amp; AEO</div>
+      <div style="font-size:clamp(11px,1.4vh,14px);color:var(--ink3);line-height:1.5">We handle your AI search optimisation end-to-end. Content strategy, citation building, and prompt tracking, all done for you.</div>
+    </div>
+  </div>
+
+  <!-- Success story -->
+  <div style="flex:1;min-height:0;display:flex;flex-direction:column">
+    <div style="background:var(--ok-bg);border:1px solid var(--ok-bd);border-radius:8px;padding:clamp(8px,1.2vh,14px) clamp(12px,1.5vw,18px);flex-shrink:0;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:clamp(8px,1.2vh,14px)">
+        <div style="font-size:clamp(10px,1.2vh,12px);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ok)">Client success story</div>
+        <div style="font-size:clamp(10px,1.2vh,12px);color:var(--ok);background:#dcfce7;border:1px solid var(--ok-bd);border-radius:4px;padding:2px 10px;font-weight:600">Financial services &nbsp;&middot;&nbsp; United States &nbsp;&middot;&nbsp; 3-month engagement</div>
+      </div>
+      <div style="font-size:clamp(11px,1.4vh,14px);color:var(--ink2);line-height:1.5;margin-bottom:clamp(4px,0.6vh,8px)">A US-based client in the financial industry we have been working with for the past 3 months. After 90 days of AI search optimisation with Peekaboo, here is where they stand:</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(6px,1vw,12px)">
+        <div style="background:#fff;border:1px solid var(--ok-bd);border-radius:6px;padding:clamp(6px,0.9vh,10px) clamp(8px,1vw,12px)">
+          <div style="font-family:'DM Mono',monospace;font-size:clamp(18px,3vh,28px);font-weight:500;color:var(--ok);letter-spacing:-0.03em;line-height:1">+74%</div>
+          <div style="font-size:clamp(10px,1.2vh,12px);color:var(--ink3);margin-top:4px;line-height:1.4">Increase in clicks, higher on commercial keywords</div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--ok-bd);border-radius:6px;padding:clamp(6px,0.9vh,10px) clamp(8px,1vw,12px)">
+          <div style="font-family:'DM Mono',monospace;font-size:clamp(18px,3vh,28px);font-weight:500;color:var(--ok);letter-spacing:-0.03em;line-height:1">+63%</div>
+          <div style="font-size:clamp(10px,1.2vh,12px);color:var(--ink3);margin-top:4px;line-height:1.4">Increase in impressions across AI platforms</div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--ok-bd);border-radius:6px;padding:clamp(6px,0.9vh,10px) clamp(8px,1vw,12px)">
+          <div style="font-family:'DM Mono',monospace;font-size:clamp(18px,3vh,28px);font-weight:500;color:var(--ok);letter-spacing:-0.03em;line-height:1">+93%</div>
+          <div style="font-size:clamp(10px,1.2vh,12px);color:var(--ink3);margin-top:4px;line-height:1.4">Increase in referrals from ChatGPT</div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--ok-bd);border-radius:6px;padding:clamp(6px,0.9vh,10px) clamp(8px,1vw,12px)">
+          <div style="font-family:'DM Mono',monospace;font-size:clamp(14px,2.2vh,20px);font-weight:500;color:var(--ok);letter-spacing:-0.02em;line-height:1.2">Record day</div>
+          <div style="font-size:clamp(10px,1.2vh,12px);color:var(--ink3);margin-top:4px;line-height:1.4">Most clicks in a single day in 16 months</div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--ok-bd);border-radius:6px;padding:clamp(6px,0.9vh,10px) clamp(8px,1vw,12px)">
+          <div style="font-family:'DM Mono',monospace;font-size:clamp(18px,3vh,28px);font-weight:500;color:var(--ok);letter-spacing:-0.03em;line-height:1">$10K+</div>
+          <div style="font-size:clamp(10px,1.2vh,12px);color:var(--ink3);margin-top:4px;line-height:1.4">In actual sales from organic traffic</div>
+        </div>
+      </div>
+      <div style="margin-top:clamp(4px,0.6vh,8px);flex:1;min-height:0;display:flex;align-items:stretch;gap:clamp(10px,1.5vw,18px)">
+        <img src="eze-credit-growth.jpg" alt="Eze Credit Services growth chart" style="flex:1;min-width:0;object-fit:contain;object-position:left center;display:block;border-radius:6px">
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:clamp(4px,0.7vh,8px)">
+          <div style="font-size:clamp(11px,1.5vh,15px);font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ok);margin-bottom:3px">What we did</div>
+          <div style="font-size:clamp(11px,1.5vh,15px);color:var(--ink2);line-height:1.5"><strong style="color:var(--ink)">Content overhaul.</strong> Keyword-optimised copy on every page.</div>
+          <div style="font-size:clamp(11px,1.5vh,15px);color:var(--ink2);line-height:1.5"><strong style="color:var(--ink)">Meta titles &amp; descriptions.</strong> Fixed metadata for commercial keywords.</div>
+          <div style="font-size:clamp(11px,1.5vh,15px);color:var(--ink2);line-height:1.5"><strong style="color:var(--ink)">BoFu content.</strong> "Best alternatives" articles for active buyers.</div>
+          <div style="font-size:clamp(11px,1.5vh,15px);color:var(--ink2);line-height:1.5"><strong style="color:var(--ink)">FAQs &amp; interlinking.</strong> Internal links and FAQs from scratch.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Three testimonial cards -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:clamp(8px,1.2vw,16px);margin-top:1.2vh;flex-shrink:0">
+    <div style="background:var(--paper2);border:1px solid var(--rule);border-radius:8px;padding:clamp(10px,1.5vh,18px) clamp(12px,1.5vw,18px);display:flex;flex-direction:column;gap:8px">
+      <p style="font-size:clamp(10px,1.3vh,13px);color:var(--ink2);line-height:1.55;flex:1">Peekaboo became an essential part of our marketing intelligence stack. It gives us clear visibility into where and how our brand is mentioned across LLMs, and helps us identify the content being picked up and how we compare to competitors.</p>
+      <div style="display:flex;align-items:center;gap:10px;padding-top:8px;border-top:1px solid var(--rule);flex-shrink:0">
+        <img src="https://www.aipeekaboo.com/LisaBorg.png" alt="Lisa Borg" style="width:34px;height:34px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1px solid var(--rule)" onerror="this.style.display=&apos;none&apos;;this.nextElementSibling.style.display=&apos;flex&apos;">
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--signal-bg);border:1px solid var(--signal-bd);display:none;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--signal);flex-shrink:0">LB</div>
+        <div style="flex:1">
+          <div style="font-size:clamp(11px,1.4vh,13px);font-weight:700;color:var(--ink)">Lisa Borg</div>
+          <div style="font-size:clamp(9px,1.1vh,11px);color:var(--ink4)">SVP of Marketing</div>
+          <a href="https://www.linkedin.com/posts/lisaborg_4-months-ago-i-started-working-on-something-activity-7371546824136052737-_H2Q/?utm_source=share&utm_medium=member_desktop" target="_blank" rel="noopener noreferrer" style="font-size:clamp(9px,1.1vh,11px);color:var(--ink4);text-decoration:underline;margin-top:2px;display:block">Read their review</a>
+        </div>
+        <img src="https://www.google.com/s2/favicons?domain=akumin.com&sz=32" alt="Akumin" style="width:18px;height:18px;border-radius:3px;flex-shrink:0;opacity:0.8">
+      </div>
+    </div>
+    <div style="background:var(--paper2);border:1px solid var(--rule);border-radius:8px;padding:clamp(10px,1.5vh,18px) clamp(12px,1.5vw,18px);display:flex;flex-direction:column;gap:8px">
+      <p style="font-size:clamp(10px,1.3vh,13px);color:var(--ink2);line-height:1.55;flex:1">We knew LLMs were driving traffic, but we had no visibility into where we appeared. Peekaboo gave us clear insight into our mentions, our gaps, and opportunities. It is now essential for tracking and improving our share of voice across AI platforms.</p>
+      <div style="display:flex;align-items:center;gap:10px;padding-top:8px;border-top:1px solid var(--rule);flex-shrink:0">
+        <img src="https://www.aipeekaboo.com/images/landing-v2/swanand.jpeg" alt="Swanand Pisat" style="width:34px;height:34px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1px solid var(--rule)" onerror="this.style.display=&apos;none&apos;;this.nextElementSibling.style.display=&apos;flex&apos;">
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--signal-bg);border:1px solid var(--signal-bd);display:none;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--signal);flex-shrink:0">SP</div>
+        <div style="flex:1">
+          <div style="font-size:clamp(11px,1.4vh,13px);font-weight:700;color:var(--ink)">Swanand Pisat</div>
+          <div style="font-size:clamp(9px,1.1vh,11px);color:var(--ink4)">Digital Marketing Manager</div>
+        </div>
+        <img src="https://www.google.com/s2/favicons?domain=shaadi.com&sz=32" alt="Shaadi" style="width:18px;height:18px;border-radius:3px;flex-shrink:0;opacity:0.8">
+      </div>
+    </div>
+    <div style="background:var(--paper2);border:1px solid var(--rule);border-radius:8px;padding:clamp(10px,1.5vh,18px) clamp(12px,1.5vw,18px);display:flex;flex-direction:column;gap:8px">
+      <p style="font-size:clamp(10px,1.3vh,13px);color:var(--ink2);line-height:1.55;flex:1">The team behind Peekaboo has been great to work with. They&rsquo;re quick to help, open to feedback, and genuinely care about improving the product. It feels like they&rsquo;re partners in our success, not just software providers.</p>
+      <div style="display:flex;align-items:center;gap:10px;padding-top:8px;border-top:1px solid var(--rule);flex-shrink:0">
+        <img src="https://www.aipeekaboo.com/images/landing-v2/darryl-coombes.jpeg" alt="Darryl Coombes" style="width:34px;height:34px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1px solid var(--rule)" onerror="this.style.display=&apos;none&apos;;this.nextElementSibling.style.display=&apos;flex&apos;">
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--signal-bg);border:1px solid var(--signal-bd);display:none;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--signal);flex-shrink:0">DC</div>
+        <div style="flex:1">
+          <div style="font-size:clamp(11px,1.4vh,13px);font-weight:700;color:var(--ink)">Darryl Coombes</div>
+          <div style="font-size:clamp(9px,1.1vh,11px);color:var(--ink4)">Managing Director</div>
+          <a href="https://www.linkedin.com/feed/update/urn:li:activity:7405326453921374208/?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7405326453921374208%2C7413473859019898880%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287413473859019898880%2Curn%3Ali%3Aactivity%3A7405326453921374208%29" target="_blank" rel="noopener noreferrer" style="font-size:clamp(9px,1.1vh,11px);color:var(--ink4);text-decoration:underline;margin-top:2px;display:block">Read their review</a>
+        </div>
+        <img src="https://www.google.com/s2/favicons?domain=websem.io&sz=32" alt="Websem" style="width:18px;height:18px;border-radius:3px;flex-shrink:0;opacity:0.8">
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 07 PRICING -->
+<section><div class="s">
+  <div class="stripe"></div>
+  <div class="snum">06 / 07</div>
+  <div class="cat">Plans &amp; Pricing</div>
+  <h2>14-Day Free Trial. <span style="color:var(--signal)">No Credit Card Required.</span></h2>
+  <div class="pboxes">
+    <div class="pbox">
+      <div class="pbox-name">Starter</div>
+      <div class="pbox-price">$50<span>/mo</span></div>
+      <div class="pbox-desc">For SMBs exploring AI visibility</div>
+      <div class="pbox-feat">
+        <div class="pbox-feat-row">1 brand &nbsp;·&nbsp; 40 prompts</div>
+        <div class="pbox-feat-row">Tracking every 2 days</div>
+        <div class="pbox-feat-row">3,000 data points/mo</div>
+        <div class="pbox-feat-row" style="gap:4px;flex-wrap:wrap">
+          All AI models:
+          <img src="https://www.aipeekaboo.com/logos/openai.png" class="ico-sm" alt="ChatGPT" title="ChatGPT">
+          <img src="https://www.aipeekaboo.com/logos/google-logo.png" class="ico-sm" alt="Google AI Overviews" title="Google AI Overviews">
+          <img src="https://www.aipeekaboo.com/logos/gem-logo.png" class="ico-sm" alt="Gemini" title="Gemini">
+          <img src="https://www.aipeekaboo.com/logos/perplexity.png" class="ico-sm" alt="Perplexity" title="Perplexity">
+          <img src="https://www.aipeekaboo.com/logos/google-logo.png" class="ico-sm" alt="Google AI Mode" title="Google AI Mode">
+        </div>
+        <div style="font-size:clamp(8px,0.95vh,10px);color:var(--ink3);line-height:1.5;padding-top:2px">ChatGPT &nbsp;·&nbsp; Google AI Overviews &nbsp;·&nbsp; Gemini &nbsp;·&nbsp; Perplexity &nbsp;·&nbsp; Google AI Mode</div>
+        <div class="pbox-feat-row" style="gap:4px">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ico-sm" style="width:13px;height:13px;flex-shrink:0"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Looker Studio &nbsp;·&nbsp;
+          <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-search-console-icon.png" class="ico-sm" alt="GSC">
+          GSC &nbsp;·&nbsp;
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ico-sm" style="width:13px;height:13px;flex-shrink:0"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          API &nbsp;·&nbsp; White Label
+        </div>
+      </div>
+    </div>
+    <div class="pbox">
+      <div class="pbox-name">Peek</div>
+      <div class="pbox-price">$100<span>/mo</span></div>
+      <div class="pbox-desc">Daily insights to catch trends early</div>
+      <div class="pbox-feat">
+        <div class="pbox-feat-row">1 brand &nbsp;·&nbsp; 40 prompts</div>
+        <div class="pbox-feat-row">Daily tracking</div>
+        <div class="pbox-feat-row">6,000 data points/mo</div>
+        <div class="pbox-feat-row" style="gap:4px;flex-wrap:wrap">
+          All AI models:
+          <img src="https://www.aipeekaboo.com/logos/openai.png" class="ico-sm" alt="ChatGPT" title="ChatGPT">
+          <img src="https://www.aipeekaboo.com/logos/google-logo.png" class="ico-sm" alt="Google AI Overviews" title="Google AI Overviews">
+          <img src="https://www.aipeekaboo.com/logos/gem-logo.png" class="ico-sm" alt="Gemini" title="Gemini">
+          <img src="https://www.aipeekaboo.com/logos/perplexity.png" class="ico-sm" alt="Perplexity" title="Perplexity">
+          <img src="https://www.aipeekaboo.com/logos/google-logo.png" class="ico-sm" alt="Google AI Mode" title="Google AI Mode">
+        </div>
+        <div style="font-size:clamp(8px,0.95vh,10px);color:var(--ink3);line-height:1.5;padding-top:2px">ChatGPT &nbsp;·&nbsp; Google AI Overviews &nbsp;·&nbsp; Gemini &nbsp;·&nbsp; Perplexity &nbsp;·&nbsp; Google AI Mode</div>
+        <div class="pbox-feat-row" style="gap:4px">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ico-sm" style="width:13px;height:13px;flex-shrink:0"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Looker Studio &nbsp;·&nbsp;
+          <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-search-console-icon.png" class="ico-sm" alt="GSC">
+          GSC &nbsp;·&nbsp;
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ico-sm" style="width:13px;height:13px;flex-shrink:0"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          API &nbsp;·&nbsp; White Label
+        </div>
+      </div>
+    </div>
+    <div class="pbox">
+      <div class="pbox-name">Grow</div>
+      <div class="pbox-price">$200<span>/mo</span></div>
+      <div class="pbox-desc">Comprehensive tracking for teams</div>
+      <div class="pbox-feat">
+        <div class="pbox-feat-row">1 brand &nbsp;·&nbsp; 100 prompts</div>
+        <div class="pbox-feat-row">Daily tracking</div>
+        <div class="pbox-feat-row">15,000 data points/mo</div>
+        <div class="pbox-feat-row" style="gap:4px;flex-wrap:wrap">
+          All AI models:
+          <img src="https://www.aipeekaboo.com/logos/openai.png" class="ico-sm" alt="ChatGPT" title="ChatGPT">
+          <img src="https://www.aipeekaboo.com/logos/google-logo.png" class="ico-sm" alt="Google AI Overviews" title="Google AI Overviews">
+          <img src="https://www.aipeekaboo.com/logos/gem-logo.png" class="ico-sm" alt="Gemini" title="Gemini">
+          <img src="https://www.aipeekaboo.com/logos/perplexity.png" class="ico-sm" alt="Perplexity" title="Perplexity">
+          <img src="https://www.aipeekaboo.com/logos/google-logo.png" class="ico-sm" alt="Google AI Mode" title="Google AI Mode">
+        </div>
+        <div style="font-size:clamp(8px,0.95vh,10px);color:var(--ink3);line-height:1.5;padding-top:2px">ChatGPT &nbsp;·&nbsp; Google AI Overviews &nbsp;·&nbsp; Gemini &nbsp;·&nbsp; Perplexity &nbsp;·&nbsp; Google AI Mode</div>
+        <div class="pbox-feat-row" style="gap:4px">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ico-sm" style="width:13px;height:13px;flex-shrink:0"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Looker Studio &nbsp;·&nbsp;
+          <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-search-console-icon.png" class="ico-sm" alt="GSC">
+          GSC &nbsp;·&nbsp;
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ico-sm" style="width:13px;height:13px;flex-shrink:0"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          API &nbsp;·&nbsp; White Label
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="callout n" style="margin-top:1.2vh">Agencies managing 10+ brands: custom pricing with volume discounts available at <strong>aipeekaboo.com/pricing</strong></div>
+</div></section>
+
+<!-- 08 GET STARTED -->
+<section><div class="s">
+  <div class="stripe"></div>
+  <div class="snum">07 / 07</div>
+  <div class="cat">Next Steps</div>
+  <h2>Next Steps to Getting Your Brand <span style="color:var(--signal)">Visible in AI</span></h2>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:clamp(10px,1.5vh,18px);min-height:0">
+  <div class="outcomes" style="margin-bottom:0;flex-shrink:0">
+    <a href="https://calendly.com/founderpeekaboo/30min?month=2025-08" target="_blank" rel="noopener noreferrer" class="obox" style="text-decoration:none;border:2px solid var(--signal);background:var(--signal-bg);cursor:pointer;transition:border-color 0.2s;text-align:center;display:flex;align-items:center;justify-content:center;padding:clamp(16px,2.5vh,28px) clamp(16px,2vw,24px)"><div style="font-size:clamp(18px,2.8vh,28px);font-weight:700;color:var(--signal)">Book a Meeting</div></a>
+    <a href="https://www.aipeekaboo.com/onboarding" target="_blank" rel="noopener noreferrer" class="obox" style="text-decoration:none;border:2px solid var(--signal);background:var(--signal-bg);cursor:pointer;transition:border-color 0.2s;text-align:center;display:flex;align-items:center;justify-content:center;padding:clamp(16px,2.5vh,28px) clamp(16px,2vw,24px)"><div style="font-size:clamp(18px,2.8vh,28px);font-weight:700;color:var(--signal)">Check Your AI Visibility Now</div></a>
+  </div>
+  <!-- Options text -->
+  <div style="flex-shrink:0;padding:0">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2.5vw,32px)">
+      <div>
+        <div style="font-size:clamp(15px,2.2vh,22px);font-weight:700;color:var(--ink);margin-bottom:clamp(4px,0.6vh,8px)">Book a meeting with us</div>
+        <p style="font-size:clamp(13px,1.7vh,17px);color:var(--ink3);line-height:1.6">Get a personalised demo tailored to your brand and industry. We will walk you through how AI Peekaboo tracks your visibility across ChatGPT, Gemini, Perplexity and more, and show you exactly where you stand against competitors. From there, we can set up a one-month pilot so you can see real results before committing.</p>
+      </div>
+      <div>
+        <div style="font-size:clamp(15px,2.2vh,22px);font-weight:700;color:var(--ink);margin-bottom:clamp(4px,0.6vh,8px)">Or try it on your own first</div>
+        <p style="font-size:clamp(13px,1.7vh,17px);color:var(--ink3);line-height:1.6">Check your AI Visibility Score in under two minutes. No credit card, no setup call needed. Enter your brand, pick your keywords, and see how you appear across AI platforms right now. If you like what you see, sign up for a 14-day free trial with full access to every feature. You can always book a meeting with us later.</p>
+      </div>
+    </div>
+  </div>
+  <!-- Founders -->
+  <div style="flex-shrink:0;margin-top:clamp(12px,2vh,24px)">
+  <div class="col-head" style="margin-bottom:clamp(6px,1vh,10px)">The Founders: About Us</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,2vw,24px);align-items:end">
+    <!-- Filipe -->
+    <div style="background:var(--paper2);border:1px solid var(--rule);border-radius:8px;padding:clamp(10px,1.4vh,16px) clamp(12px,1.5vw,18px);display:flex;flex-direction:column">
+      <div style="display:flex;align-items:flex-start;gap:clamp(10px,1.2vw,16px);margin-bottom:clamp(6px,1vh,10px)">
+        <img src="filipe.jpeg" alt="Filipe Lins Duarte" style="width:clamp(48px,6.5vh,68px);height:clamp(48px,6.5vh,68px);border-radius:50%;object-fit:cover;border:2px solid var(--rule);flex-shrink:0">
+        <div style="flex:1">
+          <div style="font-size:clamp(16px,2.2vh,22px);font-weight:700;color:var(--ink)">Filipe Lins Duarte</div>
+          <div style="font-size:clamp(12px,1.5vh,15px);color:var(--signal);font-weight:600">Co-Founder &amp; CEO</div>
+          <a href="https://www.linkedin.com/in/filipelinsduarte" target="_blank" rel="noopener noreferrer" style="font-size:clamp(10px,1.2vh,12px);color:var(--ink4);text-decoration:underline;margin-top:2px;display:inline-block">LinkedIn</a>
+          <p style="font-size:clamp(10px,1.3vh,13px);color:var(--ink3);line-height:1.55;margin-top:clamp(6px,0.8vh,10px)">Sales and growth leader turned founder. Built and scaled revenue teams across SaaS companies in Europe and the US. Now applying that experience to help brands get found where AI searches.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:clamp(6px,0.9vh,10px);flex:1">
+        <div style="display:grid;grid-template-columns:clamp(22px,3vh,28px) 1fr auto;gap:clamp(8px,1vw,12px);align-items:center;padding:clamp(6px,0.9vh,10px) clamp(8px,1vw,12px);background:#fff;border:1px solid var(--rule);border-radius:6px">
+          <img src="https://www.google.com/s2/favicons?domain=aipeekaboo.com&sz=64" style="width:100%;border-radius:4px" alt="">
+          <div><div style="font-size:clamp(12px,1.5vh,15px);font-weight:700;color:var(--ink)">AI Peekaboo</div><div style="font-size:clamp(10px,1.2vh,12px);color:var(--ink3)">Co-Founder &amp; CEO</div></div>
+          <div style="font-size:clamp(9px,1.1vh,11px);color:var(--ink4);white-space:nowrap">Aug 2025 - Present</div>
+        </div>
+        <div style="display:grid;grid-template-columns:clamp(22px,3vh,28px) 1fr auto;gap:clamp(8px,1vw,12px);align-items:center;padding:clamp(6px,0.9vh,10px) clamp(8px,1vw,12px);background:#fff;border:1px solid var(--rule);border-radius:6px">
+          <img src="https://www.google.com/s2/favicons?domain=uber.com&sz=64" style="width:100%;border-radius:4px" alt="">
+          <div><div style="font-size:clamp(12px,1.5vh,15px);font-weight:700;color:var(--ink)">Uber for Business</div><div style="font-size:clamp(10px,1.2vh,12px);color:var(--ink3)">Mid-Market AE &middot; 146% of quota</div></div>
+          <div style="font-size:clamp(9px,1.1vh,11px);color:var(--ink4);white-space:nowrap">Sep 2024 - Aug 2025</div>
+        </div>
+        <div style="display:grid;grid-template-columns:clamp(22px,3vh,28px) 1fr auto;gap:clamp(8px,1vw,12px);align-items:center;padding:clamp(6px,0.9vh,10px) clamp(8px,1vw,12px);background:#fff;border:1px solid var(--rule);border-radius:6px">
+          <img src="https://www.google.com/s2/favicons?domain=meistertask.com&sz=64" style="width:100%;border-radius:4px" alt="">
+          <div><div style="font-size:clamp(12px,1.5vh,15px);font-weight:700;color:var(--ink)">Meister</div><div style="font-size:clamp(10px,1.2vh,12px);color:var(--ink3)">#1 AE in 2023 &middot; 100%+ ARR growth</div></div>
+          <div style="font-size:clamp(9px,1.1vh,11px);color:var(--ink4);white-space:nowrap">Aug 2022 - Jul 2024</div>
+        </div>
+      </div>
+    </div>
+    <!-- John -->
+    <div style="background:var(--paper2);border:1px solid var(--rule);border-radius:8px;padding:clamp(10px,1.4vh,16px) clamp(12px,1.5vw,18px);display:flex;flex-direction:column">
+      <div style="display:flex;align-items:flex-start;gap:clamp(10px,1.2vw,16px);margin-bottom:clamp(6px,1vh,10px)">
+        <img src="john.jpeg" alt="John Rice" style="width:clamp(48px,6.5vh,68px);height:clamp(48px,6.5vh,68px);border-radius:50%;object-fit:cover;border:2px solid var(--rule);flex-shrink:0">
+        <div style="flex:1">
+          <div style="font-size:clamp(16px,2.2vh,22px);font-weight:700;color:var(--ink)">John Rice</div>
+          <div style="font-size:clamp(12px,1.5vh,15px);color:var(--signal);font-weight:600">Co-Founder &amp; CTO</div>
+          <a href="https://www.linkedin.com/in/johnwilliamrice/" target="_blank" rel="noopener noreferrer" style="font-size:clamp(10px,1.2vh,12px);color:var(--ink4);text-decoration:underline;margin-top:2px;display:inline-block">LinkedIn</a>
+          <p style="font-size:clamp(10px,1.3vh,13px);color:var(--ink3);line-height:1.55;margin-top:clamp(6px,0.8vh,10px)">Full-stack engineer and serial builder. Designed and built AI Peekaboo's entire platform from scratch. Previously senior engineer at MagicLinks, building data pipelines and analytics tools at scale.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:clamp(6px,0.9vh,10px);flex:1">
+        <div style="display:grid;grid-template-columns:clamp(22px,3vh,28px) 1fr auto;gap:clamp(8px,1vw,12px);align-items:center;padding:clamp(6px,0.9vh,10px) clamp(8px,1vw,12px);background:#fff;border:1px solid var(--rule);border-radius:6px">
+          <img src="https://www.google.com/s2/favicons?domain=aipeekaboo.com&sz=64" style="width:100%;border-radius:4px" alt="">
+          <div><div style="font-size:clamp(12px,1.5vh,15px);font-weight:700;color:var(--ink)">AI Peekaboo</div><div style="font-size:clamp(10px,1.2vh,12px);color:var(--ink3)">Co-Founder &amp; CTO</div></div>
+          <div style="font-size:clamp(9px,1.1vh,11px);color:var(--ink4);white-space:nowrap">Apr 2025 - Present</div>
+        </div>
+        <div style="display:grid;grid-template-columns:clamp(22px,3vh,28px) 1fr auto;gap:clamp(8px,1vw,12px);align-items:center;padding:clamp(6px,0.9vh,10px) clamp(8px,1vw,12px);background:#fff;border:1px solid var(--rule);border-radius:6px">
+          <img src="https://www.google.com/s2/favicons?domain=subredditsignals.com&sz=64" style="width:100%;border-radius:4px" alt="">
+          <div><div style="font-size:clamp(12px,1.5vh,15px);font-weight:700;color:var(--ink)">Subreddit Signals</div><div style="font-size:clamp(10px,1.2vh,12px);color:var(--ink3)">Founder</div></div>
+          <div style="font-size:clamp(9px,1.1vh,11px);color:var(--ink4);white-space:nowrap">Nov 2024 - Present</div>
+        </div>
+        <div style="display:grid;grid-template-columns:clamp(22px,3vh,28px) 1fr auto;gap:clamp(8px,1vw,12px);align-items:center;padding:clamp(6px,0.9vh,10px) clamp(8px,1vw,12px);background:#fff;border:1px solid var(--rule);border-radius:6px">
+          <img src="https://www.google.com/s2/favicons?domain=magiclinks.com&sz=64" style="width:100%;border-radius:4px" alt="">
+          <div><div style="font-size:clamp(12px,1.5vh,15px);font-weight:700;color:var(--ink)">MagicLinks</div><div style="font-size:clamp(10px,1.2vh,12px);color:var(--ink3)">Senior Software Engineer</div></div>
+          <div style="font-size:clamp(9px,1.1vh,11px);color:var(--ink4);white-space:nowrap">Jul 2021 - Apr 2024</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+</div></section>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script>
+Reveal.initialize({
+  hash:true, transition:'slide', transitionSpeed:'fast',
+  controls:true, progress:true, slideNumber:'c/t',
+  disableLayout:true, width:'100%', height:'100%',
+  margin:0, minScale:1, maxScale:1
+});
+</script>
+</body>
+</html>

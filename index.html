@@ -122,8 +122,17 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#
   /* Keep reveal.js slides but allow scroll inside each slide */
   .reveal .slides section{overflow-y:auto!important;-webkit-overflow-scrolling:touch}
   .s{padding:3vw!important;height:100vh!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch}
+  .s>*{flex-shrink:0!important}
   .snum{font-size:10px!important}
   .stripe{width:3px}
+
+  /* Kill all flex:1/min-height:0 that cause collapse */
+  [style*="flex:1"]{flex:none!important}
+  [style*="min-height:0"]{min-height:auto!important}
+
+  /* Success story image + what we did */
+  [style*="align-items:stretch;gap"]{flex-direction:column!important}
+  [style*="align-items:stretch;gap"] img{width:100%!important;max-height:none!important;height:auto!important}
 
   .reveal h1{font-size:22px!important;line-height:1.25!important}
   .reveal h2{font-size:18px!important;line-height:1.25!important;margin-bottom:10px!important}

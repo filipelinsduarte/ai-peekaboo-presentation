@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Peekaboo PLG Performance Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* Peekaboo brand */
+  --pink:#f8c8ff;
+  --pink-dark:#d946ef;
+  --pink-deep:#a21caf;
+  --yellow:#ffcc45;
+  --yellow-dark:#d97706;
+  --black:#0A0A0A;
+  --white:#ffffff;
+  /* Neutrals */
+  --g900:#111827;
+  --g800:#1f2937;
+  --g700:#374151;
+  --g600:#4b5563;
+  --g500:#6b7280;
+  --g400:#9ca3af;
+  --g300:#d1d5db;
+  --g200:#e5e7eb;
+  --g100:#f3f4f6;
+  --g50:#f9fafb;
+  /* Semantic */
+  --green:#059669;
+  --green-bg:#ecfdf5;
+  --red:#dc2626;
+  --red-bg:#fef2f2;
+  --amber:#d97706;
+  --amber-bg:#fffbeb;
+}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:var(--white)}
+.reveal-viewport,.reveal{width:100%!important;height:100%!important;background:var(--white)!important}
+.reveal .backgrounds,.reveal .slide-background,.reveal .slide-background-content{background:var(--white)!important}
+.reveal .slides section{width:100vw!important;height:100vh!important;padding:0!important;background:var(--white)!important;display:flex!important;flex-direction:column!important;text-align:left!important}
+.reveal .slides section *{text-align:left}
+.reveal .progress{height:3px;background:linear-gradient(to right,var(--pink),var(--yellow))}
+.reveal .controls{display:none!important}
+.reveal .slide-number{font-size:12px;color:var(--g400);background:none;right:22px;bottom:16px;font-family:'Inter',sans-serif}
+.reveal .slides,.reveal .slides *{font-family:'Inter',sans-serif;color:var(--black)}
+.reveal h1,.reveal h2,.reveal h3{text-transform:none;line-height:1.1;margin:0;font-weight:800;text-align:left;letter-spacing:-.025em}
+.reveal h1{font-size:clamp(42px,7vh,82px)}
+.reveal h2{font-size:clamp(28px,4.8vh,54px)}
+
+/* Shell */
+.s{width:100vw;height:100vh;padding:clamp(24px,4vh,48px) clamp(36px,5.5vw,80px);display:flex;flex-direction:column;overflow:hidden;position:relative}
+
+/* Header */
+.hdr{display:flex;justify-content:space-between;align-items:center;flex-shrink:0;margin-bottom:clamp(16px,2.4vh,32px)}
+.tag{font-size:clamp(11px,1.3vh,14px);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--g500)}
+.snum{font-size:clamp(12px,1.4vh,14px);font-weight:500;color:var(--g400)}
+
+/* Eyebrow */
+.eyebrow{font-size:clamp(12px,1.5vh,15px);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink-deep);margin-bottom:clamp(8px,1.2vh,14px)}
+
+/* Subtitle */
+.sub{font-size:clamp(15px,2.1vh,21px);color:var(--g500);line-height:1.5;margin-bottom:clamp(12px,1.8vh,24px);font-weight:400}
+
+/* Metric cards - clean, no accent borders */
+.mc{background:var(--g50);border:1px solid var(--g200);border-radius:12px;padding:clamp(16px,2.2vh,26px) clamp(16px,2vw,22px);display:flex;flex-direction:column;gap:5px}
+.mc .ml{font-size:clamp(11px,1.3vh,13px);font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--g400)}
+.mc .mv{font-size:clamp(26px,4.6vh,52px);font-weight:900;letter-spacing:-.03em;line-height:1;color:var(--black)}
+.mc .md{font-size:clamp(12px,1.5vh,15px);color:var(--g500);line-height:1.4;margin-top:2px}
+/* Semantic card variants - background tint only, no left border */
+.mc.pos .mv{color:var(--green)}
+.mc.neg .mv{color:var(--red)}
+.mc.warn .mv{color:var(--amber)}
+.mc.brand .mv{color:var(--pink-deep)}
+
+/* Delta pills - small, subtle */
+.up{display:inline-flex;align-items:center;gap:3px;font-size:clamp(12px,1.5vh,14px);font-weight:700;color:var(--green)}
+.dn{display:inline-flex;align-items:center;gap:3px;font-size:clamp(12px,1.5vh,14px);font-weight:700;color:var(--red)}
+.wn{display:inline-flex;align-items:center;gap:3px;font-size:clamp(12px,1.5vh,14px);font-weight:700;color:var(--amber)}
+
+/* Grids */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,1.8vw,20px)}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:clamp(12px,1.8vw,20px)}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:clamp(12px,1.8vw,18px)}
+
+/* Callout box - clean version, no left border */
+.callout{background:var(--g50);border:1px solid var(--g200);border-radius:10px;padding:clamp(12px,1.7vh,18px) clamp(14px,2vw,22px);font-size:clamp(13px,1.7vh,17px);line-height:1.65;color:var(--g700);flex-shrink:0}
+.callout strong{color:var(--black);font-weight:700}
+.callout.pink-tint{background:#fdf4ff;border-color:#f0abfc}
+.callout.yellow-tint{background:#fffbeb;border-color:#fde68a}
+
+/* Quarter comparison panels */
+.qp{border-radius:12px;padding:clamp(14px,2vh,22px);display:flex;flex-direction:column;gap:7px}
+.qp.q4{background:var(--g50);border:1px solid var(--g200)}
+.qp.q1{background:#fdf4ff;border:1px solid #f0abfc}
+.qhead{font-size:clamp(12px,1.5vh,15px);font-weight:800;letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px}
+.qhead.q4{color:var(--g500)}
+.qhead.q1{color:var(--pink-deep)}
+.qrow{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--g200);font-size:clamp(13px,1.7vh,17px)}
+.qrow:last-child{border-bottom:none}
+.ql{color:var(--g700);font-weight:500}
+.qv{font-weight:800;font-size:clamp(14px,1.9vh,19px);color:var(--black)}
+.qrow.hl{background:var(--g100);border-radius:7px;padding:6px 10px;margin:2px -6px;border-bottom:none}
+
+/* Bar chart */
+.bl{display:flex;flex-direction:column;gap:clamp(14px,2vh,22px)}
+.bi{display:flex;flex-direction:column;gap:6px}
+.bn{font-size:clamp(13px,1.6vh,16px);font-weight:600;color:var(--g700)}
+.bpair{display:flex;flex-direction:column;gap:5px}
+.bline{display:grid;grid-template-columns:clamp(80px,11vw,130px) 1fr clamp(54px,8vw,80px);gap:10px;align-items:center}
+.bq{font-size:clamp(12px,1.5vh,14px);font-weight:700;color:var(--g400)}
+.bq.q1c{color:var(--pink-deep)}
+.btr{height:clamp(12px,1.8vh,20px);background:var(--g200);border-radius:5px;overflow:hidden}
+.bf.q4{background:var(--g300);height:100%;border-radius:5px}
+.bf.q1{background:var(--pink-dark);height:100%;border-radius:5px}
+.bv{font-size:clamp(13px,1.6vh,16px);font-weight:700;text-align:right;color:var(--g600)}
+.bv.q1c{color:var(--pink-deep)}
+
+/* Full comparison table */
+.ct{width:100%;border-collapse:collapse;font-size:clamp(13px,1.7vh,16px)}
+.ct th{padding:clamp(9px,1.2vh,13px) clamp(10px,1.4vw,16px);font-size:clamp(10px,1.3vh,13px);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--g500);border-bottom:2px solid var(--g200);background:var(--g50)}
+.ct th.q1h{color:var(--pink-deep);background:#fdf4ff}
+.ct td{padding:clamp(8px,1.1vh,12px) clamp(10px,1.4vw,16px);border-bottom:1px solid var(--g100);color:var(--g700);font-weight:500}
+.ct td.n{font-weight:700;color:var(--black);text-align:right}
+.ct td.n.q1c{color:var(--pink-deep)}
+.ct td.n.ok{color:var(--green)}
+.ct td.n.bad{color:var(--red)}
+.ct td.n.wc{color:var(--amber)}
+.ct .sec td{background:#fdf4ff;color:var(--pink-deep);font-size:clamp(10px,1.2vh,12px);font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:6px 16px;border:none}
+.ct tr:hover:not(.sec) td{background:var(--g50)}
+
+/* Priority cards */
+.pri{display:flex;gap:clamp(14px,2vw,22px);padding:clamp(14px,2vh,20px);background:var(--g50);border:1px solid var(--g200);border-radius:12px;align-items:flex-start}
+.pn{font-size:clamp(28px,4.2vh,48px);font-weight:900;line-height:1;flex-shrink:0;width:clamp(40px,5vw,56px);color:var(--black)}
+.ptitle{font-size:clamp(15px,2vh,20px);font-weight:700;color:var(--black);margin-bottom:5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pdesc{font-size:clamp(13px,1.6vh,16px);color:var(--g600);line-height:1.6}
+.badge{display:inline-flex;align-items:center;font-size:clamp(10px,1.2vh,13px);font-weight:700;padding:3px 10px;border-radius:99px;background:var(--g200);color:var(--g700)}
+
+/* Note banner - for the 4mo vs 3mo callout */
+.note{background:var(--yellow);color:var(--black);font-size:clamp(12px,1.5vh,15px);font-weight:600;padding:clamp(7px,1vh,11px) clamp(14px,2vw,20px);border-radius:8px;display:flex;align-items:center;gap:8px}
+.note svg{flex-shrink:0}
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- SLIDE 1: INTRO ================================================== -->
+<section><div class="s">
+<div class="hdr">
+  <img src="https://www.aipeekaboo.com/images/peekaboo-logo-black.png" style="height:clamp(20px,2.8vh,32px)">
+  <span class="snum">01 / 11</span>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:clamp(20px,3vh,40px)">
+  <div>
+    <div class="eyebrow">PLG Performance Report</div>
+    <h1>Q4 2025<br>vs Q1 2026</h1>
+    <p style="font-size:clamp(15px,2vh,22px);color:var(--g500);margin-top:clamp(10px,1.5vh,18px);font-weight:400">Self-serve motion only. Sales-led deals excluded. Duplicates removed.</p>
+  </div>
+  <div class="note" style="max-width:600px">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    Q4 2025 covers 4 months (Sep to Dec). Q1 2026 covers 3 months (Jan to Mar). All rate comparisons are per-month normalised.
+  </div>
+  <div style="display:flex;gap:clamp(10px,1.5vw,16px)">
+    <div class="mc" style="flex:1;min-width:90px"><div class="ml">Q4 Period</div><div class="mv" style="font-size:clamp(14px,2vh,20px)">Sep to Dec 2025</div><div class="md">4 months</div></div>
+    <div class="mc" style="flex:1;min-width:90px"><div class="ml">Q1 Period</div><div class="mv" style="font-size:clamp(14px,2vh,20px)">Jan to Mar 2026</div><div class="md">3 months</div></div>
+    <div class="mc" style="flex:1;min-width:90px"><div class="ml">PLG Signups</div><div class="mv">137</div><div class="md">self-serve only</div></div>
+  </div>
+</div>
+</div></section>
+
+<!-- SLIDE 2: Q1 IS BETTER ACROSS EVERY METRIC ====================== -->
+<section><div class="s">
+<div class="hdr">
+  <div style="display:flex;align-items:center;gap:14px">
+    <img src="https://www.aipeekaboo.com/images/peekaboo-logo-black.png" style="height:clamp(16px,2.2vh,26px)">
+    <span class="tag">Performance</span>
+  </div>
+  <span class="snum">02 / 11</span>
+</div>
+<h2 style="margin-bottom:clamp(4px,.6vh,8px)">Q1 Is Better Across Every Metric</h2>
+<p class="sub">Quarter-over-quarter improvement in all key PLG indicators. Note: Q4 = 4 months, Q1 = 3 months.</p>
+<div class="g4" style="flex-shrink:0;margin-bottom:clamp(12px,1.8vh,18px)">
+  <div class="mc brand">
+    <div class="ml">Trial Activation Rate</div>
+    <div class="mv">25% to 46%</div>
+    <div class="md"><span class="up">+21 percentage points</span></div>
+  </div>
+  <div class="mc pos">
+    <div class="ml">Active Customers</div>
+    <div class="mv">1 to 8</div>
+    <div class="md"><span class="up">+700%</span> more paying customers</div>
+  </div>
+  <div class="mc warn">
+    <div class="ml">Churn Rate</div>
+    <div class="mv">94% to 77%</div>
+    <div class="md"><span class="up">Down 17 points</span></div>
+  </div>
+  <div class="mc">
+    <div class="ml">Ever Paid Rate</div>
+    <div class="mv">26% to 47%</div>
+    <div class="md"><span class="up">+21 percentage points</span></div>
+  </div>
+</div>
+<div class="g2" style="flex:1;min-height:0">
+  <div class="qp q4" style="padding:clamp(10px,1.4vh,16px)">
+    <div class="qhead q4">Q4 2025 / 4 months / Sep to Dec</div>
+    <div class="qrow" style="font-size:clamp(12px,1.5vh,15px)"><span class="ql">Signups</span><span class="qv" style="font-size:clamp(13px,1.7vh,17px)">65</span></div>
+    <div class="qrow" style="font-size:clamp(12px,1.5vh,15px)"><span class="ql">Started trial</span><span class="qv" style="font-size:clamp(13px,1.7vh,17px)">16 <small style="font-weight:500;color:var(--g400)">(24.6%)</small></span></div>
+    <div class="qrow" style="font-size:clamp(12px,1.5vh,15px)"><span class="ql">Ever paid</span><span class="qv" style="font-size:clamp(13px,1.7vh,17px)">17 <small style="color:var(--g400)">(26.2%)</small></span></div>
+    <div class="qrow hl" style="font-size:clamp(12px,1.5vh,15px)"><span class="ql" style="color:var(--red)">Active now</span><span class="qv" style="font-size:clamp(13px,1.7vh,17px)" style="color:var(--red)">1 (1.5%)</span></div>
+    <div class="qrow" style="font-size:clamp(12px,1.5vh,15px)"><span class="ql">Churned</span><span class="qv" style="font-size:clamp(13px,1.7vh,17px)" style="color:var(--red)">16 (94.1%)</span></div>
+  </div>
+  <div class="qp q1" style="padding:clamp(10px,1.4vh,16px)">
+    <div class="qhead q1">Q1 2026 / 3 months / Jan to Mar</div>
+    <div class="qrow" style="font-size:clamp(12px,1.5vh,15px)" style="border-color:#f0abfc"><span class="ql">Signups</span><span class="qv" style="font-size:clamp(13px,1.7vh,17px)" style="color:var(--pink-deep)">72</span></div>
+    <div class="qrow" style="font-size:clamp(12px,1.5vh,15px)" style="border-color:#f0abfc"><span class="ql">Started trial</span><span class="qv" style="font-size:clamp(13px,1.7vh,17px)" style="color:var(--pink-deep)">33 <small>(45.8%)</small></span></div>
+    <div class="qrow" style="font-size:clamp(12px,1.5vh,15px)" style="border-color:#f0abfc"><span class="ql">Ever paid</span><span class="qv" style="font-size:clamp(13px,1.7vh,17px)" style="color:var(--pink-deep)">34 <small>(47.2%)</small></span></div>
+    <div class="qrow hl" style="font-size:clamp(12px,1.5vh,15px)"><span class="ql" style="color:var(--green)">Active now</span><span class="qv" style="font-size:clamp(13px,1.7vh,17px)" style="color:var(--green)">8 (11.1%)</span></div>
+    <div class="qrow" style="font-size:clamp(12px,1.5vh,15px)"><span class="ql">Churned</span><span class="qv" style="font-size:clamp(13px,1.7vh,17px)" style="color:var(--amber)">26 (76.5%)</span></div>
+  </div>
+</div>
+
+</div></section>
+
+
+<!-- SLIDE 3: CURRENT CUSTOMERS ====================================== -->
+<section><div class="s">
+<div class="hdr">
+  <div style="display:flex;align-items:center;gap:14px">
+    <img src="https://www.aipeekaboo.com/images/peekaboo-logo-black.png" style="height:clamp(16px,2.2vh,26px)">
+    <span class="tag">Current Customers</span>
+  </div>
+  <span class="snum">03 / 11</span>
+</div>
+<h2 style="margin-bottom:clamp(4px,.6vh,8px)">31 Customers. $6,394 MRR. 92% Sales-Led.</h2>
+<p class="sub">Segmented by ICP type and acquisition motion. Avg contract value $206/month.</p>
+<div class="g2" style="flex:1;min-height:0;gap:clamp(10px,1.5vw,18px)">
+  <div style="display:flex;flex-direction:column;gap:clamp(10px,1.4vh,16px)">
+
+    <div style="font-size:clamp(11px,1.3vh,14px);font-weight:700;color:var(--g500);letter-spacing:.07em;text-transform:uppercase">MRR by ICP Segment</div>
+
+    <div class="bi">
+      <div class="bn" style="display:flex;justify-content:space-between">
+        <span>Agencies <span style="font-size:.85em;color:var(--g400);font-weight:400">(16 customers)</span></span>
+        <span style="font-weight:700;color:var(--pink-deep,#a21caf)">$3,271 &nbsp;<small style="color:var(--g400);font-weight:400">51.2%</small></span>
+      </div>
+      <div class="btr"><div class="bf q1" style="width:100%"></div></div>
+    </div>
+
+    <div class="bi">
+      <div class="bn" style="display:flex;justify-content:space-between">
+        <span>Managed Client <span style="font-size:.85em;color:var(--g400);font-weight:400">(1 customer, Eze Credit)</span></span>
+        <span style="font-weight:700;color:var(--g700)">$1,500 &nbsp;<small style="color:var(--g400);font-weight:400">23.5%</small></span>
+      </div>
+      <div class="btr"><div class="bf" style="width:45.9%;height:100%;border-radius:5px;background:var(--amber)"></div></div>
+    </div>
+
+    <div class="bi">
+      <div class="bn" style="display:flex;justify-content:space-between">
+        <span>Brands <span style="font-size:.85em;color:var(--g400);font-weight:400">(12 customers)</span></span>
+        <span style="font-weight:700;color:var(--g700)">$1,123 &nbsp;<small style="color:var(--g400);font-weight:400">17.6%</small></span>
+      </div>
+      <div class="btr"><div class="bf" style="width:34.4%;height:100%;border-radius:5px;background:var(--g400)"></div></div>
+    </div>
+
+    <div class="bi">
+      <div class="bn" style="display:flex;justify-content:space-between">
+        <span>API / Platform <span style="font-size:.85em;color:var(--g400);font-weight:400">(2 customers)</span></span>
+        <span style="font-weight:700;color:var(--g700)">$500 &nbsp;<small style="color:var(--g400);font-weight:400">7.8%</small></span>
+      </div>
+      <div class="btr"><div class="bf" style="width:15.3%;height:100%;border-radius:5px;background:var(--g300)"></div></div>
+    </div>
+
+    <div style="margin-top:4px">
+      <div style="font-size:clamp(11px,1.3vh,14px);font-weight:700;color:var(--g500);letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px">Acquisition Motion</div>
+      <div style="display:flex;gap:10px">
+        <div class="mc neg" style="flex:1;padding:clamp(10px,1.4vh,16px)">
+          <div class="ml">Sales-Led</div>
+          <div class="mv">24</div>
+          <div class="md">$5,894 MRR (92.2%)</div>
+        </div>
+        <div class="mc pos" style="flex:1;padding:clamp(10px,1.4vh,16px)">
+          <div class="ml">Product-Led</div>
+          <div class="mv">7</div>
+          <div class="md">$500 MRR (7.8%)</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:var(--g50);border:1px solid var(--g200);border-radius:10px;padding:clamp(8px,1.1vh,14px) clamp(10px,1.4vw,16px);font-size:clamp(11px,1.4vh,14px);line-height:1.6;color:var(--g700)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <span style="font-weight:700;color:var(--black)">ACV (excl. managed client)</span>
+          <span style="font-family:monospace;font-weight:800;font-size:clamp(14px,1.9vh,20px);color:var(--black)">$163<span style="font-size:.7em;color:var(--g400)">/mo</span></span>
+        </div>
+        <div style="font-size:clamp(10px,1.2vh,13px);color:var(--g500)">Based on 30 self-serve customers excluding Eze Credit Services ($1,500 managed). True PLG ACV = <strong style="color:var(--black)">$163/month</strong>.</div>
+      </div>
+      <div class="callout">
+      <strong>PLG is not working yet at revenue level.</strong> Only 7 customers self-served to paying, contributing just 7.8% of MRR. The gap between signups and revenue is sales motion. Fixing PLG conversion is the path to not needing sales for every deal.
+    </div>
+
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:clamp(11px,1.3vh,14px);font-weight:700;color:var(--g500);letter-spacing:.07em;text-transform:uppercase">All Customers by MRR</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span id="cust-page-label" style="font-size:clamp(10px,1.2vh,13px);color:var(--g400);font-weight:500">Page 1 of 2</span>
+        <button onclick="custPage(1)" id="btn-p1" style="padding:4px 12px;border-radius:6px;border:1.5px solid var(--pink-dark,#d946ef);background:var(--pink-dark,#d946ef);color:#fff;font-size:clamp(10px,1.2vh,12px);font-weight:700;cursor:pointer;font-family:inherit">1</button>
+        <button onclick="custPage(2)" id="btn-p2" style="padding:4px 12px;border-radius:6px;border:1.5px solid var(--g200);background:transparent;color:var(--g500);font-size:clamp(10px,1.2vh,12px);font-weight:700;cursor:pointer;font-family:inherit">2</button>
+      </div>
+    </div>
+    <table class="ct" style="table-layout:fixed;font-size:clamp(9px,1.1vh,12px)">
+      <thead>
+        <tr>
+          <th style="text-align:left;width:40%">Customer</th>
+          <th style="text-align:right;width:15%">MRR</th>
+          <th style="text-align:center;width:18%">ICP</th>
+          <th style="text-align:center;width:27%">Motion</th>
+        </tr>
+      </thead>
+      <tbody id="cust-tbody"></tbody>
+    </table>
+  </div>
+<script>
+(function(){
+var SL = [
+  ["Eze Credit Services","$1,500","Managed","Sales-led","amber"],
+  ["UniK SEO","$540.90","Agency","Sales-led","red"],
+  ["Web SEM Online","$440.00","Agency","Sales-led","red"],
+  ["BreezeMaxWeb","$400.00","Agency","Sales-led","red"],
+  ["CollabWORK","$300.00","API","Sales-led","red"],
+  ["Justin M Abrams","$250.00","Agency","Sales-led","red"],
+  ["Ron R Browning (Intellibright)","$250.00","Agency","Sales-led","red"],
+  ["Michael Sack (SEOasis)","$220.00","Agency","Sales-led","red"],
+  ["Scaile","$200.00","API","Sales-led","red"],
+  ["Lori M Cook","$200.00","Agency","Sales-led","red"],
+  ["Jonathan Storey","$200.00","Brand","Sales-led","red"],
+  ["Rahul Sharma","$200.00","Agency","Sales-led","red"],
+  ["Erick Arroqui Storni","$150.00","Brand","Sales-led","red"],
+  ["Basic Enterprises","$123.00","Brand","Sales-led","red"],
+  ["Norbert Kathriner","$120.00","Agency","Sales-led","red"],
+  ["Jason Carroll","$100.00","Agency","Product-led","green"],
+  ["Michael Kim","$100.00","Agency","Sales-led","red"],
+  ["Aquaphor International","$100.00","Brand","Sales-led","red"],
+  ["Brittany Trafis","$100.00","Agency","Sales-led","red"],
+  ["Vincent Velasquez","$100.00","Agency","Sales-led","red"],
+  ["Gianluca Pezzi","$100.00","Agency","Sales-led","red"],
+  ["Dov Nudelman","$100.00","Brand","Product-led","green"],
+  ["Kyle Menster","$100.00","Agency","Sales-led","red"],
+  ["Zain Akbari","$100.00","Brand","Sales-led","red"],
+  ["Jonathan Bouzanquet","$100.00","Brand","Product-led","green"],
+  ["Planeco Building GmbH","$50.00","Brand","Sales-led","red"],
+  ["Tomas Argentina Agency","$50.00","Agency","Product-led","green"],
+  ["Pass the Keys","$50.00","Brand","Product-led","green"],
+  ["Sheaufen Tay","$50.00","Brand","Product-led","green"],
+  ["Nicole Finkielsztein","$50.00","Brand","Product-led","green"],
+  ["Stewart Noakes","$50.00","Brand","Sales-led","red"]
+];
+var PER_PAGE = 16;
+var current = 1;
+function motionBadge(m, c) {
+  var bg = c==='green' ? 'var(--green-bg,#ecfdf5)' : 'var(--red-bg,#fef2f2)';
+  var col = c==='green' ? 'var(--green,#059669)' : 'var(--red,#dc2626)';
+  return '<span style="background:'+bg+';color:'+col+';font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px">'+m+'</span>';
+}
+function rowBg(c) {
+  if(c==='green') return 'background:var(--green-bg,#ecfdf5)';
+  if(c==='amber') return 'background:var(--amber-bg,#fffbeb)';
+  return '';
+}
+function render(page) {
+  current = page;
+  var tbody = document.getElementById('cust-tbody');
+  var start = (page-1)*PER_PAGE, end = Math.min(start+PER_PAGE, SL.length);
+  var rows = '';
+  for(var i=start;i<end;i++){
+    var r=SL[i];
+    rows += '<tr style="'+rowBg(r[4])+'"><td style="font-weight:'+(i<4?'700':'500')+'">'+r[0]+'</td>'+
+      '<td class="n" style="color:'+(r[4]==='green'?'var(--green)':r[4]==='amber'?'var(--amber)':'var(--black)')+'">'+r[1]+'</td>'+
+      '<td style="text-align:center;font-size:10px;color:var(--g600)">'+r[2]+'</td>'+
+      '<td style="text-align:center">'+motionBadge(r[3],r[4])+'</td></tr>';
+  }
+  tbody.innerHTML = rows;
+  var lbl = document.getElementById('cust-page-label');
+  lbl.textContent = 'Page '+page+' of 2 ('+start+1+' to '+end+' of '+SL.length+')';
+  var b1=document.getElementById('btn-p1'), b2=document.getElementById('btn-p2');
+  var on='padding:4px 12px;border-radius:6px;border:1.5px solid var(--pink-dark,#d946ef);background:var(--pink-dark,#d946ef);color:#fff;font-size:clamp(10px,1.2vh,12px);font-weight:700;cursor:pointer;font-family:inherit';
+  var off='padding:4px 12px;border-radius:6px;border:1.5px solid var(--g200);background:transparent;color:var(--g500);font-size:clamp(10px,1.2vh,12px);font-weight:700;cursor:pointer;font-family:inherit';
+  b1.style.cssText = page===1?on:off;
+  b2.style.cssText = page===2?on:off;
+}
+window.custPage = render;
+document.addEventListener('DOMContentLoaded', function(){ render(1); });
+if(document.readyState !== 'loading') render(1);
+})();
+</script>
+</div>
+</div></section>
+
+<!-- SLIDE 3: SEO ==================================================== -->
+<section><div class="s">
+<div class="hdr">
+  <div style="display:flex;align-items:center;gap:14px">
+    <img src="https://www.aipeekaboo.com/images/peekaboo-logo-black.png" style="height:clamp(16px,2.2vh,26px)">
+    <span class="tag">Organic Search</span>
+  </div>
+  <span class="snum">04 / 11</span>
+</div>
+<h2 style="margin-bottom:clamp(4px,.6vh,8px)">SEO Is Growing. Impressions Up 65%</h2>
+<p class="sub">Google Search Console for aipeekaboo.com. Q4 = 4 months, Q1 = 3 months. Clicks compared per month.</p>
+<div class="g4" style="flex-shrink:0;margin-bottom:clamp(12px,1.8vh,18px)">
+  <div class="mc pos">
+    <div class="ml">Clicks per Month</div>
+    <div class="mv">+29%</div>
+    <div class="md">389/mo to 502/mo</div>
+  </div>
+  <div class="mc pos">
+    <div class="ml">Impressions</div>
+    <div class="mv">+65%</div>
+    <div class="md">432K to 712K (total)</div>
+  </div>
+  <div class="mc pos">
+    <div class="ml">Avg Position</div>
+    <div class="mv">+9 spots</div>
+    <div class="md">34.9 to 25.9</div>
+  </div>
+  <div class="mc neg">
+    <div class="ml">CTR</div>
+    <div class="mv">0.36% to 0.21%</div>
+    <div class="md"><span class="dn">Down 42%</span></div>
+  </div>
+</div>
+<div class="g2" style="flex:1;min-height:0;gap:clamp(14px,2vw,24px);align-items:start">
+  <div class="bl" style="justify-content:center;display:flex;flex-direction:column">
+    <div class="bi">
+      <div class="bn">Clicks per Month (normalised to 1 month)</div>
+      <div class="bpair">
+        <div class="bline" style="display:grid;grid-template-columns:90px 1fr 78px;gap:10px;align-items:center"><span class="bq">Q4 2025</span><div class="btr"><div class="bf q4" style="width:77.5%"></div></div><span class="bv">389/mo</span></div>
+        <div class="bline" style="display:grid;grid-template-columns:90px 1fr 78px;gap:10px;align-items:center"><span class="bq q1c">Q1 2026</span><div class="btr"><div class="bf q1" style="width:100%"></div></div><span class="bv q1c">502/mo</span></div>
+      </div>
+    </div>
+    <div class="bi">
+      <div class="bn">Impressions (total)</div>
+      <div class="bpair">
+        <div class="bline" style="display:grid;grid-template-columns:90px 1fr 78px;gap:10px;align-items:center"><span class="bq">Q4 2025</span><div class="btr"><div class="bf q4" style="width:60.7%"></div></div><span class="bv">432K</span></div>
+        <div class="bline" style="display:grid;grid-template-columns:90px 1fr 78px;gap:10px;align-items:center"><span class="bq q1c">Q1 2026</span><div class="btr"><div class="bf q1" style="width:100%"></div></div><span class="bv q1c">712K</span></div>
+      </div>
+    </div>
+    <div class="bi">
+      <div class="bn">Avg Position (lower = better)</div>
+      <div class="bpair">
+        <div class="bline" style="display:grid;grid-template-columns:90px 1fr 78px;gap:10px;align-items:center"><span class="bq">Q4 2025</span><div class="btr"><div class="bf q4" style="width:100%"></div></div><span class="bv">34.9</span></div>
+        <div class="bline" style="display:grid;grid-template-columns:90px 1fr 78px;gap:10px;align-items:center"><span class="bq q1c">Q1 2026</span><div class="btr"><div class="bf" style="width:74.2%;background:var(--green);height:100%;border-radius:5px"></div></div><span class="bv" style="color:var(--green)">25.9</span></div>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div style="font-size:clamp(11px,1.3vh,14px);font-weight:700;color:var(--g500);letter-spacing:.07em;text-transform:uppercase">Top Pages Q1 2026</div>
+    <table class="ct">
+      <thead><tr><th style="text-align:left">Page</th><th style="text-align:right">Clicks</th><th style="text-align:right">Impressions</th><th style="text-align:right">CTR</th></tr></thead>
+      <tbody>
+        <tr><td>Homepage</td><td class="n ok">917</td><td class="n">14.7K</td><td class="n">6.2%</td></tr>
+        <tr><td>/blog/fan-out-queries</td><td class="n">143</td><td class="n">15K</td><td class="n">1.0%</td></tr>
+        <tr><td>/free-ai-crawlability-checker</td><td class="n">48</td><td class="n">2.4K</td><td class="n">2.0%</td></tr>
+        <tr><td>/tools hub</td><td class="n">21</td><td class="n">1.9K</td><td class="n">1.1%</td></tr>
+        <tr style="background:var(--yellow-tint,#fffbeb)">
+          <td style="font-weight:600">/blog/best-white-label-seo</td>
+          <td class="n wc">29</td><td class="n wc">152K</td><td class="n wc">0.0%</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="callout yellow-tint" style="font-size:clamp(11px,1.4vh,14px)"><strong>Quick win:</strong> The white-label SEO post has 152,000 impressions and a 0.0% CTR. Rewriting the title and meta description could unlock significant traffic with no new content.</div>
+  </div>
+</div>
+</div></section>
+
+<!-- SLIDE 4: GA4 OVERVIEW =========================================== -->
+<section><div class="s">
+<div class="hdr">
+  <div style="display:flex;align-items:center;gap:14px">
+    <img src="https://www.aipeekaboo.com/images/peekaboo-logo-black.png" style="height:clamp(16px,2.2vh,26px)">
+    <span class="tag">Website Analytics</span>
+  </div>
+  <span class="snum">05 / 11</span>
+</div>
+<h2 style="margin-bottom:clamp(4px,.6vh,8px)">GA4 Overview. Users Up, Engagement Down.</h2>
+<p class="sub">All figures per month to make Q4 (4 months) and Q1 (3 months) comparable.</p>
+<div class="g4" style="flex-shrink:0;margin-bottom:clamp(12px,1.8vh,18px)">
+  <div class="mc pos">
+    <div class="ml">Users / Month</div>
+    <div class="mv">+17%</div>
+    <div class="md">1,625 to 1,894</div>
+  </div>
+  <div class="mc neg">
+    <div class="ml">Engagement Rate</div>
+    <div class="mv">-20%</div>
+    <div class="md">54.6% to 43.9%</div>
+  </div>
+  <div class="mc neg">
+    <div class="ml">Avg Session Duration</div>
+    <div class="mv">-28%</div>
+    <div class="md">415s to 297s</div>
+  </div>
+  <div class="mc neg">
+    <div class="ml">Bounce Rate</div>
+    <div class="mv">+24%</div>
+    <div class="md">45.4% to 56.1%</div>
+  </div>
+</div>
+<div style="flex:1;overflow:auto">
+<table class="ct">
+  <thead>
+    <tr>
+      <th style="text-align:left;width:35%">Metric</th>
+      <th style="text-align:right">Q4 2025 /mo</th>
+      <th class="q1h" style="text-align:right">Q1 2026 /mo</th>
+      <th style="text-align:right">Change</th>
+      <th style="text-align:left;padding-left:14px;font-size:clamp(10px,1.2vh,12px)">Signal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Sessions</td><td class="n">3,494</td><td class="n q1c">3,390</td><td class="n wc">-3%</td><td style="color:var(--g500);font-size:clamp(11px,1.3vh,13px)">Flat</td></tr>
+    <tr><td>Users</td><td class="n">1,625</td><td class="n q1c">1,894</td><td class="n ok">+17%</td><td style="color:var(--green);font-size:clamp(11px,1.3vh,13px)">Top of funnel growing</td></tr>
+    <tr><td>New Users</td><td class="n">1,576</td><td class="n q1c">1,843</td><td class="n ok">+17%</td><td style="color:var(--green);font-size:clamp(11px,1.3vh,13px)">New audience growing</td></tr>
+    <tr><td>Pageviews</td><td class="n">11,988</td><td class="n q1c">9,452</td><td class="n bad">-21%</td><td style="color:var(--red);font-size:clamp(11px,1.3vh,13px)">Fewer pages per session</td></tr>
+    <tr><td>Bounce Rate</td><td class="n">45.4%</td><td class="n q1c">56.1%</td><td class="n bad">+24%</td><td style="color:var(--red);font-size:clamp(11px,1.3vh,13px)">More single-page visits</td></tr>
+    <tr><td>Engagement Rate</td><td class="n">54.6%</td><td class="n q1c">43.9%</td><td class="n bad">-20%</td><td style="color:var(--red);font-size:clamp(11px,1.3vh,13px)">Declining stickiness</td></tr>
+    <tr><td>Avg Session Duration</td><td class="n">415s</td><td class="n q1c">297s</td><td class="n bad">-28%</td><td style="color:var(--red);font-size:clamp(11px,1.3vh,13px)">Shallower sessions</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="callout" style="margin-top:clamp(10px,1.4vh,14px)"><strong>The pattern:</strong> More users arriving (+17%) but spending less time and bouncing more. Top of funnel is healthy. The product and content need to do more work to turn visits into engaged sessions.</div>
+</div></section>
+
+<!-- SLIDE 5: LLM TRAFFIC ============================================ -->
+<section><div class="s">
+<div class="hdr">
+  <div style="display:flex;align-items:center;gap:14px">
+    <img src="https://www.aipeekaboo.com/images/peekaboo-logo-black.png" style="height:clamp(16px,2.2vh,26px)">
+    <span class="tag">LLM Referral Traffic</span>
+  </div>
+  <span class="snum">06 / 11</span>
+</div>
+<h2 style="margin-bottom:clamp(4px,.6vh,8px)">LLMs Are Becoming a Real Channel</h2>
+<p class="sub">ChatGPT, Perplexity, Gemini and Claude now send 1.36% of all sessions. Claude sends the highest-quality visitors on the entire site.</p>
+<div class="g4" style="flex-shrink:0;margin-bottom:clamp(12px,1.8vh,18px)">
+  <div class="mc pos">
+    <div class="ml">Total LLM Sessions</div>
+    <div class="mv">+18%</div>
+    <div class="md">117 (Q4) to 138 (Q1)</div>
+  </div>
+  <div class="mc brand">
+    <div class="ml">LLM Share of Traffic</div>
+    <div class="mv">1.36%</div>
+    <div class="md">Was 0.84% in Q4</div>
+  </div>
+  <div class="mc pos">
+    <div class="ml">Claude.ai Avg Time</div>
+    <div class="mv">24 min</div>
+    <div class="md">1,462s  to  best on site</div>
+  </div>
+  <div class="mc">
+    <div class="ml">New Sources in Q1</div>
+    <div class="mv">2</div>
+    <div class="md">Gemini + Claude (both new)</div>
+  </div>
+</div>
+<div style="flex:1;overflow:auto">
+<table class="ct">
+  <thead>
+    <tr>
+      <th style="text-align:left;width:30%">LLM Source</th>
+      <th style="text-align:right">Q4 Sessions</th>
+      <th class="q1h" style="text-align:right">Q1 Sessions</th>
+      <th style="text-align:right">Change</th>
+      <th style="text-align:right">Q1 Engagement</th>
+      <th style="text-align:right">Q1 Avg Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>ChatGPT / referral</td><td class="n">67</td><td class="n q1c">39</td><td class="n bad">-42%</td><td class="n">43.6%</td><td class="n">384s</td></tr>
+    <tr><td>ChatGPT / (not set)</td><td class="n">25</td><td class="n q1c">42</td><td class="n ok">+68%</td><td class="n">57.1%</td><td class="n">386s</td></tr>
+    <tr><td>Perplexity.ai</td><td class="n">14</td><td class="n q1c">21</td><td class="n ok">+50%</td><td class="n">57.1%</td><td class="n">516s</td></tr>
+    <tr style="background:var(--green-bg,#ecfdf5)">
+      <td style="font-weight:600">Gemini (new in Q1)</td>
+      <td class="n" style="color:var(--g400)">0</td>
+      <td class="n ok">23</td>
+      <td class="n ok">NEW</td>
+      <td class="n ok">69.6%</td>
+      <td class="n ok">487s</td>
+    </tr>
+    <tr style="background:#fdf4ff">
+      <td style="font-weight:700;color:var(--pink-deep,#a21caf)">Claude.ai (new in Q1)</td>
+      <td class="n" style="color:var(--g400)">0</td>
+      <td class="n" style="color:var(--pink-deep,#a21caf);font-weight:700">13</td>
+      <td class="n ok">NEW</td>
+      <td class="n" style="color:var(--pink-deep,#a21caf);font-weight:700">76.9%</td>
+      <td class="n" style="color:var(--pink-deep,#a21caf);font-weight:700">1,462s</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="callout pink-tint" style="margin-top:clamp(10px,1.4vh,14px)"><strong>Claude.ai visitors spend an average of 24 minutes on Peekaboo</strong>  to  the highest engagement of any traffic source on the site. Gemini appeared in Q1 from zero. LLMs becoming a real acquisition channel worth optimising for.</div>
+</div></section>
+
+<!-- SLIDE 6: TRAFFIC SOURCES ======================================== -->
+<section><div class="s">
+<div class="hdr">
+  <div style="display:flex;align-items:center;gap:14px">
+    <img src="https://www.aipeekaboo.com/images/peekaboo-logo-black.png" style="height:clamp(16px,2.2vh,26px)">
+    <span class="tag">Traffic Sources</span>
+  </div>
+  <span class="snum">07 / 11</span>
+</div>
+<h2 style="margin-bottom:clamp(4px,.6vh,8px)">Social and Community Channels Collapsed</h2>
+<p class="sub">Direct and organic held steady. LinkedIn down 74%, Reddit down 96%, newsletter down 82%.</p>
+<div class="g2" style="flex:1;min-height:0;gap:clamp(16px,2.2vw,28px);align-items:start">
+  <div class="bl" style="justify-content:center;display:flex;flex-direction:column">
+    <div class="bi">
+      <div class="bn">Direct</div>
+      <div class="bpair">
+        <div class="bline" style="display:grid;grid-template-columns:90px 1fr 78px;gap:10px;align-items:center"><span class="bq">Q4 2025</span><div class="btr"><div class="bf q4" style="width:83%"></div></div><span class="bv">1,260/mo</span></div>
+        <div class="bline" style="display:grid;grid-template-columns:90px 1fr 78px;gap:10px;align-items:center"><span class="bq q1c">Q1 2026</span><div class="btr"><div class="bf q1" style="width:100%"></div></div><span class="bv q1c">1,518/mo</span></div>
+      </div>
+    </div>
+    <div class="bi">
+      <div class="bn">Google Organic</div>
+      <div class="bpair">
+        <div class="bline" style="display:grid;grid-template-columns:90px 1fr 78px;gap:10px;align-items:center"><span class="bq">Q4 2025</span><div class="btr"><div class="bf q4" style="width:100%"></div></div><span class="bv">760/mo</span></div>
+        <div class="bline" style="display:grid;grid-template-columns:90px 1fr 78px;gap:10px;align-items:center"><span class="bq q1c">Q1 2026</span><div class="btr"><div class="bf q1" style="width:99.9%"></div></div><span class="bv q1c">759/mo</span></div>
+      </div>
+    </div>
+    <div class="bi">
+      <div class="bn">LinkedIn</div>
+      <div class="bpair">
+        <div class="bline" style="display:grid;grid-template-columns:90px 1fr 78px;gap:10px;align-items:center"><span class="bq">Q4 2025</span><div class="btr"><div class="bf q4" style="width:100%"></div></div><span class="bv">144/mo</span></div>
+        <div class="bline" style="display:grid;grid-template-columns:90px 1fr 78px;gap:10px;align-items:center"><span class="bq q1c">Q1 2026</span><div class="btr"><div class="bf" style="width:26.4%;height:100%;border-radius:5px;background:var(--red)"></div></div><span class="bv" style="color:var(--red)">38/mo</span></div>
+      </div>
+    </div>
+    <div class="bi">
+      <div class="bn">Reddit</div>
+      <div class="bpair">
+        <div class="bline" style="display:grid;grid-template-columns:90px 1fr 78px;gap:10px;align-items:center"><span class="bq">Q4 2025</span><div class="btr"><div class="bf q4" style="width:100%"></div></div><span class="bv">54/mo</span></div>
+        <div class="bline" style="display:grid;grid-template-columns:90px 1fr 78px;gap:10px;align-items:center"><span class="bq q1c">Q1 2026</span><div class="btr"><div class="bf" style="width:3.7%;height:100%;border-radius:5px;background:var(--red)"></div></div><span class="bv" style="color:var(--red)">2/mo</span></div>
+      </div>
+    </div>
+    <div class="bi">
+      <div class="bn">Newsletter (Markermilk)</div>
+      <div class="bpair">
+        <div class="bline" style="display:grid;grid-template-columns:90px 1fr 78px;gap:10px;align-items:center"><span class="bq">Q4 2025</span><div class="btr"><div class="bf q4" style="width:100%"></div></div><span class="bv">51/mo</span></div>
+        <div class="bline" style="display:grid;grid-template-columns:90px 1fr 78px;gap:10px;align-items:center"><span class="bq q1c">Q1 2026</span><div class="btr"><div class="bf" style="width:17.6%;height:100%;border-radius:5px;background:var(--red)"></div></div><span class="bv" style="color:var(--red)">9/mo</span></div>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:clamp(8px,1.2vh,14px)">
+    <div style="font-size:clamp(11px,1.3vh,14px);font-weight:700;color:var(--g500);letter-spacing:.07em;text-transform:uppercase">All Sources</div>
+    <table class="ct" style="table-layout:fixed">
+      <thead>
+        <tr>
+          <th style="text-align:left">Source</th>
+          <th style="text-align:right">Q4 /mo</th>
+          <th class="q1h" style="text-align:right">Q1 /mo</th>
+          <th style="text-align:right">Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Direct</td><td class="n">1,260</td><td class="n q1c">1,518</td><td class="n ok">+20%</td></tr>
+        <tr><td>Google Organic</td><td class="n">760</td><td class="n q1c">759</td><td class="n" style="color:var(--g400)">Flat</td></tr>
+        <tr><td>Google accounts (referral)</td><td class="n">489</td><td class="n q1c">508</td><td class="n ok">+4%</td></tr>
+        <tr><td>Stripe checkout</td><td class="n">177</td><td class="n q1c">59</td><td class="n bad">-67%</td></tr>
+        <tr><td>LinkedIn</td><td class="n">144</td><td class="n bad">38</td><td class="n bad">-74%</td></tr>
+        <tr><td>Reddit</td><td class="n">54</td><td class="n bad">2</td><td class="n bad">-96%</td></tr>
+        <tr><td>Newsletter</td><td class="n">51</td><td class="n bad">9</td><td class="n bad">-82%</td></tr>
+        <tr><td>Bing Organic</td><td class="n">13</td><td class="n q1c">23</td><td class="n ok">+77%</td></tr>
+      </tbody>
+    </table>
+    <div class="callout yellow-tint" style="font-size:clamp(11px,1.4vh,14px)"><strong>Social and community collapsed in Q1.</strong> Whatever drove LinkedIn and Reddit in Q4 stopped completely. Direct traffic up 20% suggests growing brand awareness. Stripe referrals down 67% = fewer checkout-to-site return visits.</div>
+  </div>
+</div>
+</div></section>
+
+<!-- SLIDE 9: GSC TOP QUERIES ======================================== -->
+<section><div class="s">
+<div class="hdr">
+  <div style="display:flex;align-items:center;gap:14px">
+    <img src="https://www.aipeekaboo.com/images/peekaboo-logo-black.png" style="height:clamp(16px,2.2vh,26px)">
+    <span class="tag">GSC Top Queries</span>
+  </div>
+  <span class="snum">08 / 11</span>
+</div>
+<h2 style="margin-bottom:clamp(4px,.6vh,8px)">Search Queries. Brand Dominates. Free Tool Breaking Through.</h2>
+<p class="sub">Google Search Console top queries. Q4 = 4 months total, Q1 = 3 months total. All figures are totals not per month.</p>
+<div class="g3" style="flex-shrink:0;margin-bottom:clamp(10px,1.5vh,16px)">
+  <div class="mc">
+    <div class="ml">Top Brand Query</div>
+    <div class="mv" style="font-size:clamp(18px,3vh,32px)">"peekaboo ai"</div>
+    <div class="md">324 clicks, pos 2.1 in Q1</div>
+  </div>
+  <div class="mc pos">
+    <div class="ml">Free Tool Query Growth</div>
+    <div class="mv">+367%</div>
+    <div class="md">"ai crawlability checker"  to  3 to 14 clicks</div>
+  </div>
+  <div class="mc brand">
+    <div class="ml">New Queries in Q1</div>
+    <div class="mv">2</div>
+    <div class="md">"peekabo ai" + "peekaboo tool" both new</div>
+  </div>
+</div>
+<div style="flex:1;overflow:auto">
+<table class="ct">
+  <thead>
+    <tr>
+      <th style="text-align:left;width:28%">Query</th>
+      <th style="text-align:right">Q4 Clicks</th>
+      <th class="q1h" style="text-align:right">Q1 Clicks</th>
+      <th style="text-align:right">Change</th>
+      <th style="text-align:right">Q4 Impr</th>
+      <th style="text-align:right">Q1 Impr</th>
+      <th style="text-align:right">Q4 Pos</th>
+      <th style="text-align:right">Q1 Pos</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td style="font-weight:600">peekaboo ai</td><td class="n">383</td><td class="n q1c">324</td><td class="n wc">-15%</td><td class="n">767</td><td class="n">1,047</td><td class="n">1.8</td><td class="n">2.1</td></tr>
+    <tr><td>ai peekaboo</td><td class="n">97</td><td class="n q1c">124</td><td class="n ok">+28%</td><td class="n">164</td><td class="n">208</td><td class="n">1.8</td><td class="n ok">1.2</td></tr>
+    <tr><td>aipeekaboo</td><td class="n">88</td><td class="n q1c">77</td><td class="n wc">-12%</td><td class="n">130</td><td class="n">128</td><td class="n">2.1</td><td class="n wc">5.6</td></tr>
+    <tr><td>peekaboo</td><td class="n">37</td><td class="n q1c">23</td><td class="n bad">-38%</td><td class="n">5,552</td><td class="n">2,540</td><td class="n">10.1</td><td class="n">11.9</td></tr>
+    <tr><td>aipeekaboo.com</td><td class="n">20</td><td class="n q1c">6</td><td class="n bad">-70%</td><td class="n">68</td><td class="n">45</td><td class="n">1.3</td><td class="n ok">1.0</td></tr>
+    <tr><td>peakaboo ai</td><td class="n">9</td><td class="n q1c">16</td><td class="n ok">+78%</td><td class="n">18</td><td class="n">45</td><td class="n">5.9</td><td class="n ok">3.2</td></tr>
+    <tr style="background:#ecfdf5"><td style="color:var(--green);font-weight:600">ai crawlability checker</td><td class="n">3</td><td class="n ok">14</td><td class="n ok">+367%</td><td class="n">52</td><td class="n ok">290</td><td class="n">10.9</td><td class="n ok">7.6</td></tr>
+    <tr><td>peekaboo llm</td><td class="n">3</td><td class="n q1c">10</td><td class="n ok">+233%</td><td class="n">5</td><td class="n">30</td><td class="n">1.0</td><td class="n">2.2</td></tr>
+    <tr style="background:#fdf4ff"><td style="color:var(--pink-deep,#a21caf);font-weight:600">peekabo ai (new)</td><td class="n" style="color:var(--g400)">0</td><td class="n" style="color:var(--pink-deep,#a21caf)">11</td><td class="n ok">NEW</td><td class="n" style="color:var(--g400)">0</td><td class="n">31</td><td class="n" style="color:var(--g400)"> to </td><td class="n">1.7</td></tr>
+    <tr style="background:#fdf4ff"><td style="color:var(--pink-deep,#a21caf);font-weight:600">peekaboo tool (new)</td><td class="n" style="color:var(--g400)">0</td><td class="n" style="color:var(--pink-deep,#a21caf)">11</td><td class="n ok">NEW</td><td class="n" style="color:var(--g400)">0</td><td class="n">123</td><td class="n" style="color:var(--g400)"> to </td><td class="n">5.2</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="callout" style="margin-top:clamp(8px,1.2vh,12px)"><strong>Brand search is the dominant click driver</strong> but is flat or slightly declining. The signal to watch: non-brand query "ai crawlability checker" up 367% with impressions up 458%. The free tool strategy is starting to work in search.</div>
+</div></section>
+
+<!-- SLIDE 10: GSC TOP PAGES ========================================= -->
+<section><div class="s">
+<div class="hdr">
+  <div style="display:flex;align-items:center;gap:14px">
+    <img src="https://www.aipeekaboo.com/images/peekaboo-logo-black.png" style="height:clamp(16px,2.2vh,26px)">
+    <span class="tag">GSC Top Pages</span>
+  </div>
+  <span class="snum">09 / 11</span>
+</div>
+<h2 style="margin-bottom:clamp(4px,.6vh,8px)">Top Pages. Fan-Out Post Accelerating. White-Label = Biggest Opportunity.</h2>
+<p class="sub">Clicks and impressions by page. Q4 total vs Q1 total. Homepage ranking improved from position 24.7 to 16.2.</p>
+<div style="flex:1;overflow:auto">
+<table class="ct">
+  <thead>
+    <tr>
+      <th style="text-align:left;width:34%">Page</th>
+      <th style="text-align:right">Q4 Clicks</th>
+      <th class="q1h" style="text-align:right">Q1 Clicks</th>
+      <th style="text-align:right">Change</th>
+      <th style="text-align:right">Q1 Impr</th>
+      <th style="text-align:right">Q4 Pos</th>
+      <th style="text-align:right">Q1 Pos</th>
+      <th style="text-align:left;padding-left:10px;font-size:11px">Note</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td style="font-weight:600">/ Homepage</td><td class="n">1,170</td><td class="n q1c">917</td><td class="n wc">-22%</td><td class="n">14,749</td><td class="n">24.7</td><td class="n ok">16.2</td><td style="font-size:clamp(10px,1.2vh,12px);color:var(--g500)">Ranking better, fewer impressions</td></tr>
+    <tr style="background:#ecfdf5"><td style="color:var(--green);font-weight:600">/blog/fan-out-queries</td><td class="n">103</td><td class="n ok">143</td><td class="n ok">+39%</td><td class="n ok">15,033</td><td class="n">6.5</td><td class="n">7.2</td><td style="font-size:clamp(10px,1.2vh,12px);color:var(--green)">Impressions +223%</td></tr>
+    <tr><td>/blog/best-alternatives-to-peec-ai</td><td class="n">22</td><td class="n q1c">26</td><td class="n ok">+18%</td><td class="n">12,137</td><td class="n">8.4</td><td class="n">10.3</td><td style="font-size:clamp(10px,1.2vh,12px);color:var(--g500)">Steady growth</td></tr>
+    <tr style="background:#ecfdf5"><td style="color:var(--green);font-weight:600">/free-ai-crawlability-checker</td><td class="n" style="color:var(--g400)">0</td><td class="n ok">48</td><td class="n ok">NEW</td><td class="n ok">2,432</td><td class="n" style="color:var(--g400)"> to </td><td class="n">13.1</td><td style="font-size:clamp(10px,1.2vh,12px);color:var(--green)">New, already ranking</td></tr>
+    <tr><td>/blog/how-to-track-traffic-from-chatgpt</td><td class="n">21</td><td class="n q1c">25</td><td class="n ok">+19%</td><td class="n">13,434</td><td class="n">22.8</td><td class="n wc">34.9</td><td style="font-size:clamp(10px,1.2vh,12px);color:var(--g500)">Impressions +205%</td></tr>
+    <tr><td>/blog/best-ai-monitoring-tools</td><td class="n">12</td><td class="n q1c">22</td><td class="n ok">+83%</td><td class="n">40,639</td><td class="n">51.8</td><td class="n ok">25.5</td><td style="font-size:clamp(10px,1.2vh,12px);color:var(--green)">Ranking jumped 26 spots</td></tr>
+    <tr style="background:var(--yellow,#ffcc45)"><td style="font-weight:700">/blog/best-white-label-seo-software</td><td class="n" style="color:var(--g600)">0</td><td class="n" style="font-weight:700">29</td><td class="n ok">NEW</td><td class="n" style="font-weight:700">152,447</td><td class="n" style="color:var(--g400)"> to </td><td class="n">19.2</td><td style="font-size:clamp(10px,1.2vh,12px);font-weight:700">Quick win: fix CTR</td></tr>
+    <tr><td>/blog/best-affordable-alternatives-to-ahrefs</td><td class="n">22</td><td class="n q1c">23</td><td class="n ok">+5%</td><td class="n">8,806</td><td class="n">33.2</td><td class="n ok">21.3</td><td style="font-size:clamp(10px,1.2vh,12px);color:var(--g500)">Stable</td></tr>
+    <tr><td>/blog/best-alternatives-to-athenahq</td><td class="n">17</td><td class="n q1c">11</td><td class="n wc">-35%</td><td class="n">20,929</td><td class="n">6.8</td><td class="n">7.3</td><td style="font-size:clamp(10px,1.2vh,12px);color:var(--g500)">Impressions growing</td></tr>
+    <tr style="background:var(--red-bg)"><td style="color:var(--red)">/blog/how-to-optimize-shopify-for-chatgpt</td><td class="n bad">32</td><td class="n bad">0</td><td class="n bad">-100%</td><td class="n bad">0</td><td class="n">11.0</td><td class="n bad"> to </td><td style="font-size:clamp(10px,1.2vh,12px);color:var(--red)">Dropped from index</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="callout yellow-tint" style="margin-top:clamp(8px,1.2vh,12px)"><strong>White-label SEO post: 152,447 impressions at 0.0% CTR in Q1.</strong> This is the single biggest quick win in the entire deck. One improved title and meta description could turn this into the highest-traffic post on the site.</div>
+</div></section>
+
+<!-- SLIDE 4: ALL METRICS ============================================ -->
+<section><div class="s">
+<div class="hdr">
+  <div style="display:flex;align-items:center;gap:14px">
+    <img src="https://www.aipeekaboo.com/images/peekaboo-logo-black.png" style="height:clamp(16px,2.2vh,26px)">
+    <span class="tag">Full Data</span>
+  </div>
+  <span class="snum">10 / 11</span>
+</div>
+<h2 style="margin-bottom:clamp(4px,.6vh,8px)">All Metrics Side by Side</h2>
+<p class="sub">Complete Q4 vs Q1 breakdown. Q4 = 4 months. Q1 = 3 months. Rates are per-month where noted.</p>
+<div style="flex:1;overflow:auto">
+<table class="ct">
+  <thead>
+    <tr>
+      <th style="text-align:left;width:44%">Metric</th>
+      <th style="text-align:right;width:18%">Q4 2025 (4mo)</th>
+      <th class="q1h" style="text-align:right;width:18%">Q1 2026 (3mo)</th>
+      <th style="text-align:right;width:20%">Change</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="sec"><td colspan="4">Acquisition</td></tr>
+    <tr><td>Total signups</td><td class="n">65</td><td class="n q1c">72</td><td class="n ok">+11%</td></tr>
+    <tr><td>Started a trial</td><td class="n">16</td><td class="n q1c">33</td><td class="n ok">+106%</td></tr>
+    <tr><td>Trial activation rate (per month)</td><td class="n">24.6%</td><td class="n q1c">45.8%</td><td class="n ok">+21pp</td></tr>
+    <tr class="sec"><td colspan="4">Conversion</td></tr>
+    <tr><td>Ever became a paying customer</td><td class="n">17</td><td class="n q1c">34</td><td class="n ok">+100%</td></tr>
+    <tr><td>Signup to ever paid rate</td><td class="n">26.2%</td><td class="n q1c">47.2%</td><td class="n ok">+21pp</td></tr>
+    <tr><td>Trial to paid rate</td><td class="n">100%</td><td class="n q1c">100%</td><td class="n" style="color:var(--g400)">No change</td></tr>
+    <tr class="sec"><td colspan="4">Retention</td></tr>
+    <tr><td>Currently active customers</td><td class="n bad">1</td><td class="n ok">8</td><td class="n ok">+700%</td></tr>
+    <tr><td>Trial to still active rate</td><td class="n bad">6.3%</td><td class="n ok">21.2%</td><td class="n ok">+15pp</td></tr>
+    <tr><td>Churn rate (of all who paid)</td><td class="n bad">94.1%</td><td class="n wc">76.5%</td><td class="n ok">Down 17.6pp</td></tr>
+    <tr class="sec"><td colspan="4">Organic Search (Google Search Console)</td></tr>
+    <tr><td>Clicks per month (normalised)</td><td class="n">389/mo</td><td class="n q1c">502/mo</td><td class="n ok">+29%</td></tr>
+    <tr><td>Total impressions</td><td class="n">432K</td><td class="n q1c">712K</td><td class="n ok">+65%</td></tr>
+    <tr><td>Average position</td><td class="n">34.9</td><td class="n ok">25.9</td><td class="n ok">+9 spots</td></tr>
+    <tr><td>CTR</td><td class="n">0.36%</td><td class="n wc">0.21%</td><td class="n bad">Down 42%</td></tr>
+  </tbody>
+</table>
+</div>
+</div></section>
+
+<!-- SLIDE 5: THREE PRIORITIES ======================================= -->
+<section><div class="s">
+<div class="hdr">
+  <div style="display:flex;align-items:center;gap:14px">
+    <img src="https://www.aipeekaboo.com/images/peekaboo-logo-black.png" style="height:clamp(16px,2.2vh,26px)">
+    <span class="tag">Q2 Priorities</span>
+  </div>
+  <span class="snum">11 / 11</span>
+</div>
+<h2 style="margin-bottom:clamp(4px,.6vh,8px)">Three Priorities for Q2 2026</h2>
+<p class="sub">Ranked by business impact</p>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:clamp(12px,1.8vh,20px)">
+  <div class="pri">
+    <div class="pn">01</div>
+    <div>
+      <div class="ptitle">Fix post-payment retention <span class="badge" style="background:var(--red-bg);color:var(--red)">Critical</span></div>
+      <div class="pdesc">77% of Q1 customers who paid are already gone. Launch a 90-day customer success program with proactive check-ins at Day 7, 30, and 60. Study what the 8 active Q1 customers have in common and replicate it.</div>
+    </div>
+  </div>
+  <div class="pri">
+    <div class="pn">02</div>
+    <div>
+      <div class="ptitle">Activate the 54% who never trial <span class="badge" style="background:var(--amber-bg);color:var(--amber)">High priority</span></div>
+      <div class="pdesc">More than half of Q1 signups never started a trial. Add friction-reducing triggers: an in-app prompt on first login, a 3-email onboarding sequence, and show the first AI brand mention within 24 hours of signup.</div>
+    </div>
+  </div>
+  <div class="pri" style="background:var(--yellow);border-color:var(--yellow)">
+    <div class="pn">03</div>
+    <div>
+      <div class="ptitle">Fix the white-label SEO post CTR <span class="badge">Quick win</span></div>
+      <div class="pdesc">152,000 impressions in Q1. Only 29 clicks. 0.0% CTR. Rewrite the title and meta description. This is the highest-leverage SEO fix available right now with zero new content required.</div>
+    </div>
+  </div>
+</div>
+
+</div></section>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.js"></script>
+<script>
+Reveal.initialize({
+  hash:true,progress:true,slideNumber:true,controls:false,
+  transition:'fade',transitionSpeed:'fast',backgroundTransition:'none',
+  width:'100%',height:'100%',margin:0,minScale:0.2,maxScale:2.0,disableLayout:true
+});
+</script>
+</body>
+</html>
